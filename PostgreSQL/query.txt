@@ -1,0 +1,137 @@
+CREATE TABLE employees (
+               	emp_id INTEGER NOT NULL PRIMARY KEY,
+               	emp_name VARCHAR(15),
+               	job_name VARCHAR(10),
+               	manager_id INTEGER,
+               	hire_date DATE,
+               	salary DECIMAL(10, 2),
+               	commission DECIMAL(7, 2),
+               	dep_id INTEGER,
+               	FOREIGN KEY (manager_id) REFERENCES manager(man_id),
+               	FOREIGN KEY (dep_id) REFERENCES department(dep_id)
+               )
+
+
+CREATE TABLE department (
+                          dep_id INTEGER NOT NULL PRIMARY KEY,
+                          dep_name VARCHAR (20),
+                          dep_location VARCHAR (15)
+                          )
+
+CREATE TABLE manager (
+                          man_id INTEGER NOT NULL PRIMARY KEY,
+                          man_name VARCHAR (15)
+                      )
+
+CREATE TABLE employees (
+                      	emp_id INTEGER NOT NULL PRIMARY KEY,
+                      	emp_name VARCHAR(15),
+                      	job_name VARCHAR(10),
+                      	manager_id INTEGER,
+                      	hire_date DATE,
+                      	salary DECIMAL(10, 2),
+                      	commission DECIMAL(7, 2),
+                      	dep_id INTEGER,
+                      	FOREIGN KEY (manager_id) REFERENCES manager(man_id),
+                      	FOREIGN KEY (dep_id) REFERENCES department(dep_id)
+                      )
+
+
+SELECT * FROM department
+
+CREATE TABLE pet_owner (
+                         owner_id INTEGER NOT NULL PRIMARY KEY,
+                         owner_name CHARACTER VARYING (15),
+                         owner_age INTEGER NOT NULL CHECK ( owner_age>=1 AND owner_age<=110)
+                     )
+
+CREATE TABLE hotel (
+                         hotel_id INTEGER NOT NULL PRIMARY KEY,
+                         hotel_name CHARACTER VARYING (25),
+                         hotel_stars INTEGER NOT NULL CHECK ( hotel_stars>=1 AND hotel_stars<=5)
+                     )
+
+CREATE TABLE dog (
+                         dog_id INTEGER NOT NULL PRIMARY KEY,
+                         owner_id INTEGER,
+                         dog_name CHARACTER VARYING (15),
+                         dog_age INTEGER NOT NULL CHECK ( dog_age>=1 AND dog_age<=25),
+                         FOREIGN KEY (owner_id) REFERENCES pet_owner(owner_id)
+                     )
+
+CREATE TABLE cat (
+                         cat_id INTEGER NOT NULL PRIMARY KEY,
+                         owner_id INTEGER,
+                         cat_name CHARACTER VARYING (15),
+                         cat_age INTEGER NOT NULL CHECK ( cat_age>=1 AND cat_age<=25),
+                         FOREIGN KEY (owner_id) REFERENCES pet_owner(owner_id)
+                     )
+
+CREATE TABLE dog_room (
+                         room_id INTEGER NOT NULL PRIMARY KEY,
+                         dog_id INTEGER,
+                         hotel_id INTEGER,
+                         register_data DATE,
+                         unregister_date DATE,
+                         FOREIGN KEY (dog_id) REFERENCES dog(dog_id),
+                         FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id)
+                     )
+
+CREATE TABLE cat_room (
+                         room_id INTEGER NOT NULL PRIMARY KEY,
+                         cat_id INTEGER,
+                         hotel_id INTEGER,
+                         register_data DATE,
+                         unregister_date DATE,
+                         FOREIGN KEY (cat_id) REFERENCES cat(cat_id),
+                         FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id)
+                     )
+
+
+INSERT INTO pet_owner VALUES (1, 'Petert', 26)
+
+INSERT INTO pet_owner VALUES
+                                                  (2, 'George', 32),
+                                                  (3, 'Amy', 67)
+
+
+INSERT INTO dog VALUES (1, 1, 'Fluffy', 2),
+                                                  (2, 3, 'Bully', 3),
+                                                  (3, 1, 'Rousey', 5)
+
+INSERT INTO cat VALUES (1, 2, 'Tommy', 1),
+                                                  (2, 3, 'Jessy', 7),
+                                                  (3, 2, 'Bubbles', 3)
+
+INSERT INTO hotel VALUES (1, 'Grand Pets Hotel', 5),
+                                                  (2, 'Pets Heaven', 2)
+
+INSERT INTO dog_room VALUES (1, 1, 1, '2020-06-08', '2020-06-10')
+
+INSERT INTO dog_room VALUES (2, 2, 2, '2020-06-10', '2020-06-15')
+
+INSERT INTO dog_room VALUES (3, 3, 2, '2020-06-20', '2020-06-23')
+
+INSERT INTO cat_room VALUES (1, 1, 1, '2020-06-08', '2020-06-10'),
+                                                 (2, 2, 2, '2020-06-10', '2020-06-15'),
+                                                 (3, 3, 2, '2020-06-20', '2020-06-23')
+
+SELECT * FROM dog_room
+
+SELECT cat_id FROM cat_room WHERE hotel_id=2
+
+SELECT * FROM pet_owner ORDER BY owner_age DESC
+
+SELECT COUNT(cat_age)
+                     FROM cat
+                     WHERE cat_age<=2
+
+SELECT COUNT(cat_age)
+                     FROM cat
+                     WHERE cat_age<=3
+
+
+pet_hotel_DB.public> SELECT COUNT(cat_age)
+                     FROM cat
+                     WHERE cat_age<=3
+
