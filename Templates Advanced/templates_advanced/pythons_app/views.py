@@ -21,3 +21,6 @@ def create(req):
             python = form.save()
             python.save()
             return redirect('index')
+
+
+
