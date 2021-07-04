@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block background %}
+    <style>
+      body  {
+      background-image: url("{% static 'assets/images/about-bg.jpg' %}");
+       }
+   </style>
+{% endblock %}
 {% block content %}
     <div class="slides">
         <div class="slide" id="2">
