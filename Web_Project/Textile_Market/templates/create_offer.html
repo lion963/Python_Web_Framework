@@ -8,13 +8,18 @@
     label {
   background-color: pink;
 }
+    form {
+        text-align: center;
+        margin: 50%;
+    }
+
    </style>
 {% endblock %}
 {% block content %}
 <div class="slides">
         <div class="slide" id="4">
             <div class="content fourth-content">
-                <div class="container-fluid">
+                <div class="container-fluid>
                     <form enctype="multipart/form-data" action="{% url 'create offer' %}" method="post">
                         {% csrf_token %}
                         <div class="row">
