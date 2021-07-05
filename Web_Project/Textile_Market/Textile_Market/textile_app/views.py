@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
 from Textile_Market.textile_app.forms import AddOfferForm
+from Textile_Market.textile_app.models import AddOffer
 
 
 def home_page(request):
@@ -10,7 +11,11 @@ def about_us(request):
     return render(request, 'about_us.html')
 
 def offers(request):
-    return render(request, 'offers.html')
+    offers = AddOffer.objects.all()
+    context = {
+        'offers': offers
+    }
+    return render(request, 'offers.html', context)
 
 def sign(request):
     return render(request, 'sign.html')
@@ -25,3 +30,6 @@ def create_offer(request):
         offer.save()
         return redirect('offers')
     return render(request, 'create_offer.html', {'form':form})
+
+def offer_details(request):
+    return render(request, 'offer_detail.html')
