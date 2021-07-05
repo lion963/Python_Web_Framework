@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block background %}
+    <style>
+      body  {
+      background-image: url("{% static 'assets/images/contact-bg.jpg' %}");
+       }
+    label {
+  background-color: pink;
+}
+   </style>
+{% endblock %}
+{% block content %}
+<div class="slides">
+        <div class="slide" id="4">
+            <div class="content fourth-content">
+                <div class="container-fluid">
+                    <form enctype="multipart/form-data" action="{% url 'create offer' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <h2>Offer</h2>
+                          </div>
+
+                          <div class="col-md-6">
+                            <fieldset>
+                            <label for="garment_type" >Garment</label>
+                            {{ form.garment_type }}
+                            </fieldset>
+                          </div>
+
+                          <div class="col-md-6">
+                            <fieldset>
+                              <label for="quantity">Quantity</label>
+                              {{ form.quantity }}
+                            </fieldset>
+                          </div>
+
+                          <div class="col-md-12">
+                            <fieldset>
+                                <label for="description">Description</label>
+                                {{ form.description }}
+                            </fieldset>
+                          </div>
+
+                          <div class="form-group">
+
+                              <input type="image" placeholder="Choose Image File">
+                              <input type="submit" value="Browse">
+
+                          </div>
+
+                          <div class="col-md-12">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="button">Sign</button>
+                            </fieldset>
+                          </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
