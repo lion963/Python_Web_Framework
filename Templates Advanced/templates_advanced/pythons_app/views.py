@@ -1,16 +1,21 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 from .decorators import allowed_groups
-from .forms import PythonCreateForm
+from .forms import PythonCreateForm, LoginForm, RegisterForm
 from .models import Python
 
 
-# Create your views here.
+
 def index(req):
     pythons = Python.objects.all()
     return render(req, 'index.html', {'pythons': pythons})
 
+
+
+@login_required(login_url='login')
 @allowed_groups(['User'])
 def create(req):
     if req.method == 'GET':
@@ -26,10 +31,32 @@ def create(req):
             return redirect('index')
 
 def login_view(req):
-    user = authenticate(req, username='pesho', password='D22p41570_')
-    if user:
-        login(req, user)
-        return redirect('index')
+    form = LoginForm()
+    context = {'form': form}
+    if req.method == 'POST':
+        form = LoginForm(req.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(req, username=username, password=password)
+            if user:
+                login(req, user)
+                return redirect('index')
+    return render(req, 'login.html', context)
+
+def register_view(req):
+    form = RegisterForm()
+    context = {'form': form}
+    if req.method == 'POST':
+        form = LoginForm(req.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            # email = form.cleaned_data['email']
+            user = User.objects.create_user(username=username, password=password)
+            return redirect('index')
+    return render(req, 'register.html', context)
+
 
 def logout_view(req):
     logout(req)
