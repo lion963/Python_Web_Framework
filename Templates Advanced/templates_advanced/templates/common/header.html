@@ -14,6 +14,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'create' %}">Add new Python</a>
                 </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a style="margin-left: 600px" class="nav-link" href="{% url 'logout' %}">Wellcome {{ user.username }}!  Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a style="margin-left: 850px" class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
+
             </ul>
         </div>
     </nav>
