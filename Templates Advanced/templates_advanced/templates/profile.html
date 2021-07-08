@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+{% block content %}
+<h1 class="text-left" style="margin-left: 150px">Profile</h1>
+    <div class="card m-3" style="width: 25rem;">
+        <img class="card-img-top" src="{{ profile.image.url }}" alt="Card image cap">
+        <div class="card-body">
+            <label for="first_name">First name</label>
+            <h5 class="card-title">{{ profile.first_name }}</h5>
+            <label for="last_name">Last name</label>
+            <h5 class="card-title">{{ profile.last_name }}</h5>
+            <label for="location">Location</label>
+            <h5 class="card-title">{{ profile.location }}</h5>
+            <label for="username">Username</label>
+            <h5 class="card-title">{{ user.username }}</h5>
+            <a style="margin-left: 120px" class="nav-link" href="{% url 'update' %}">Update</a>
+        </div>
+    </div>
+{% endblock %}
