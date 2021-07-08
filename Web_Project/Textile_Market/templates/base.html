@@ -24,10 +24,18 @@
 
 <nav>
     <ul>
-        <li><a href="{% url 'home' %}"><img src="{% static 'assets/images/icon-1.png' %}" alt=""><em>Homepage</em></a></li>
-        <li><a href="{% url 'about us' %}"><img src="{% static 'assets/images/icon-2.png' %}" alt=""> <em>About Us</em></a></li>
-        <li><a href="{% url 'offers' %}"><img src="{% static 'assets/images/icon-3.png' %}" alt=""> <em>Our Offers</em></a></li>
-        <li><a href="{% url 'sign' %}"><img src="{% static 'assets/images/icon-4.png' %}" alt=""> <em>Sign UP</em></a></li>
+        <li><a href="{% url 'home' %}"><em>Homepage</em></a></li>
+        <li><a href="{% url 'about us' %}"><em>About Us</em></a></li>
+        <li><a href="{% url 'offers' %}"><em>Our Offers</em></a></li>
+        <li><a href="{% url 'create offer' %}"><em>Create offer</em></a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'my offers' %}"><em>My offers</em></a></li>
+            <li><a href="{% url 'logout' %}"><em>Wellcome {{ user.profile.first_name }}! Logout</em></a></li>
+            <li><a href="{% url 'profile' %}"><em>Profile</em></a></li>
+        {% else %}
+            <li><a href="{% url 'register' %}"><em>Register</em></a></li>
+            <li><a href="{% url 'login' %}"><em>Login</em></a></li>
+        {% endif %}
     </ul>
 </nav>
 

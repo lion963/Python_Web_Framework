@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+{% load static %}
+{% block background %}
+    <style>
+      body  {
+      background-image: url("{% static 'assets/images/profile_details.jpg' %}");
+       }
+   </style>
+{% endblock %}
+{% block content %}
+    <div class="slides">
+        <div class="slide" id="3">
+            <div class="content third-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="owl-carousel owl-theme">
+                            <div class="col-md-12">
+                                <div class="featured-item">
+                                	<a href=""><img src="{{ profile.image.url }}" alt=""></a>
+                                    <div class="down-content">
+                                        <h5 class="card-title">{{ profile.first_name }}</h5>
+                                        <h5 class="card-title">{{ profile.last_name }}</h5>
+                                        <h5 class="card-title">{{ profile.company }}</h5>
+                                        <h5 class="card-title">{{ profile.telephone }}</h5>
+                                        <h5 class="card-title">{{ user.username }}</h5>
+                                        <a class="button details" href="{% url 'update' %}">Update</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

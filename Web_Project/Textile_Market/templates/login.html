@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cloudinary %}
+{% block background %}
+    <style>
+      body  {
+      background-image: url("{% static 'assets/images/login.jpg' %}");
+       }
+          label {
+  background-color: whitesmoke;
+}
+    </style>
+{% endblock %}
+{% block content %}
+ <h1 class="text-center">Sign in</h1>
+    <form class="col-lg-6 offset-lg-3" method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            {{ form.password }}
+        </div>
+        <input type="submit" value="Sign in" class="btn btn-primary mt-3">
+    </form>
+{% endblock %}

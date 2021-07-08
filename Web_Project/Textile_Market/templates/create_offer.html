@@ -1,72 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load cloudinary %}
 {% block background %}
     <style>
       body  {
-      background-image: url("{% static 'assets/images/contact-bg.jpg' %}");
+      background-image: url("{% static 'assets/images/create.jpg' %}");
        }
     label {
-  background-color: pink;
+  background-color: whitesmoke;
 }
-    form {
-        text-align: center;
-    }
-
    </style>
 {% endblock %}
 {% block content %}
-<div class="slides">
-        <div class="slide" id="4">
-            <div class="content fourth-content">
-{#                <div class="container-fluid>#}
-                    <form enctype="multipart/form-data" action="{% url 'create offer' %}" method="post">
-                        {% csrf_token %}
-                        {{ form.errors }}
-                        <div class="row">
-
-                          <div class="col-md-12">
-                            <h2>Offer</h2>
-                          </div>
-
-                          <div class="col-md-6">
-                            <fieldset>
-                            <label for="garment_type" >Garment</label>
-                            {{ form.garment_type }}
-                            </fieldset>
-                          </div>
-
-                          <div class="col-md-6">
-                            <fieldset>
-                              <label for="quantity">Quantity</label>
-                              {{ form.quantity }}
-                            </fieldset>
-                          </div>
-
-                          <div class="col-md-12">
-                            <fieldset>
-                                <label for="description">Description</label>
-                                {{ form.description }}
-                            </fieldset>
-                          </div>
-
-
-                          <div class="custom-file">
-                            <fieldset>
-                                <label class="custom-file-label" for="image">Choose Image File</label>
-                                {{ form.image }}
-                            </fieldset>
-                          </div>
-
-                          <div class="col-md-12">
-                            <fieldset>
-                              <button type="submit" id="form-submit" class="button">Create</button>
-                            </fieldset>
-                          </div>
-
-                        </div>
-                    </form>
-{#                </div>#}
-            </div>
+    <h1 class="text-center">Create Offer</h1>
+    <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="garment_type">Garment type</label>
+            {{ form.garment_type }}
         </div>
-</div>
+        <div class="form-group">
+            <label for="qantity">Quantity</label>
+            {{ form.quantity }}
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            {{ form.description }}
+        </div>
+        <div class="custom-file">
+            <label class="custom-file-label" for="image">Choose Image File</label>
+            {{ form.image }}
+        </div>
+        <input type="submit" value="Create" class="btn btn-primary mt-3">
+    </form>
 {% endblock %}
