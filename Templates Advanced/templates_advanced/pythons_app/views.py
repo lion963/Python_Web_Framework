@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 
 from .decorators import allowed_groups
@@ -22,9 +22,7 @@ def create(req):
         form = PythonCreateForm()
         return render(req, 'create.html', {'form': form})
     else:
-        data = req.POST
-        form = PythonCreateForm(data, req.FILES)
-        print(form)
+        form = PythonCreateForm(req.POST, req.FILES)
         if form.is_valid():
             python = form.save()
             python.save()
@@ -54,6 +52,10 @@ def register_view(req):
             password = form.cleaned_data['password']
             # email = form.cleaned_data['email']
             user = User.objects.create_user(username=username, password=password)
+            groups = Group.objects.all()
+            for group in groups:
+                if group.name == 'User':
+                    user.groups.add(group)
             return redirect('index')
     return render(req, 'register.html', context)
 
