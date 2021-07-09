@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.models import User
 
 from Textile_Market.textile_app.models import AddOffer, Profile
 
@@ -16,21 +15,14 @@ class OfferForm(forms.ModelForm):
             'image': forms.FileInput(attrs={'class': 'custom-file-input'})
         }
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
-        widgets = {
-            'username': forms.TextInput(attrs= {'class': 'form-control'}),
-            'password': forms.PasswordInput(attrs= {'class': 'form-control'})
-        }
-
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'company', 'telephone', 'image']
+        fields = ['first_name', 'last_name', 'type', 'telephone', 'image']
         widgets = {
-            'image': forms.FileInput(attrs={'class': 'custom-file-input'})
+            'image': forms.FileInput(attrs={'class': 'custom-file-input'}),
+            'type': forms.Select(attrs= {'class': 'form-control'})
+
         }
 
 class LoginForm(forms.Form):

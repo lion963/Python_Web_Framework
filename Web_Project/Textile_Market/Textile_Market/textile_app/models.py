@@ -10,9 +10,13 @@ class AddOffer(models.Model):
     image = CloudinaryField('image')
 
 class Profile(models.Model):
+    TYPE_CHOICES = (
+        ('company', 'company'),
+        ('person', 'person')
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE, )
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    company = models.CharField(max_length=30)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     telephone = models.CharField(max_length=20)
     image = CloudinaryField('image')
