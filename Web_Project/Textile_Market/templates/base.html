@@ -29,7 +29,9 @@
         <li><a href="{% url 'offers' %}"><em>Our Offers</em></a></li>
         {% if user.is_authenticated %}
             <li><a href="{% url 'create offer' user.profile.id %}"><em>Create offer</em></a></li>
-            <li><a href="{% url 'my offers' %}"><em>My offers</em></a></li>
+            {% if user.profile.type == "company" %}
+                <li><a href="{% url 'my offers' user.profile.id %}"><em>My offers</em></a></li>
+            {% endif %}
             <li><a href="{% url 'logout' %}"><em>Wellcome {{ user.profile.first_name }}! Logout</em></a></li>
             <li><a href="{% url 'profile' %}"><em>Profile</em></a></li>
         {% else %}

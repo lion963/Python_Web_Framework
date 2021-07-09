@@ -21,9 +21,7 @@
                                     <div class="down-content">
                                     <h4>{{ offer.garment_type }}t</h4>
                                         <h6>{{ offer.quantity }} pieces</h6>
-                                        {% if user.is_authenticated %}
-                                            <a class="button details" href="{% url 'details offer' offer.id %}">Details</a>
-                                        {% endif %}
+                                        <a class="button details" href="{% url 'details offer' offer.id %}">Details</a>
                                     </div>
                                 </div>
                             </div>

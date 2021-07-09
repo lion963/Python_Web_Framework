@@ -1,13 +1,58 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load cloudinary %}
+{% load static %}
+{% block background %}
+    <style>
+      body  {
+      background-image: url("{% static 'assets/images/offer_back.jpg' %}");
+       }
+   </style>
+{% endblock %}
+{% block content %}
+    <h1 style="margin-left: 500px; background-color: whitesmoke; width: 300px">Offer Details</h1>
+            <div class="container" style="margin-left: 500px">
+                <h2>{{ offer.garment_type }}</h2>
+                <img class="detail-img" src="{{ offer.image.url }}" alt="offer-image" />
+                <h5>Description</h5>
+                <div>
+                    <p><em>{{ offer.description }}</em></p>
+                </div>
+                <h5>{{ offer.profile.first_name }}</h5>
+                <h5>{{ offer.profile.telephone }}</h5>
+                {% if condition %}
+                    <div class="right">
+                        <a class="button edit" href="{% url 'edit offer' offer.id %}">Edit</a>
+                        <a class="button delete" style="margin-left: 100px" href="{% url 'delete offer' offer.id %}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
 
-</body>
-</html>
+            <!--end details note box-->
+        </div>
+{#    <div class="slides">#}
+{#        <div class="slide" id="3">#}
+{#            <div class="content third-content">#}
+{#                <div class="container-fluid">#}
+{#                    <div class="row">#}
+{#                        <div class="owl-carousel owl-theme">#}
+{#                            <div class="col-md-12">#}
+{#                                <div class="featured-item">#}
+{#                                	<a href=""><img src="{{ offer.image.url }}" alt=""></a>#}
+{#                                    <div class="down-content">#}
+{#                                        <h5 class="card-title">{{ offer.garment_type }}</h5>#}
+{#                                        <h5 class="card-title">{{ offer.quantity }}</h5>#}
+{#                                        <h5 class="card-title">{{ offer.description }}</h5>#}
+{#                                        <h5 class="card-title">{{ offer.profile.first_name }}</h5>#}
+{#                                        <h5 class="card-title">{{ offer.profile.telephone }}</h5>#}
+{#                                        <a class="button edit" href="{% url 'edit offer' offer.id %}">Edit</a>#}
+{#                                        <a class="button delete" style="margin-left: 50px" href="{% url 'delete offer' offer.id %}">Delete</a>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}

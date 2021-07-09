@@ -24,7 +24,8 @@
                                         <h5 class="card-title">{{ profile.type }}</h5>
                                         <h5 class="card-title">{{ profile.telephone }}</h5>
                                         <h5 class="card-title">{{ user.username }}</h5>
-                                        <a class="button details" href="{% url 'update' %}">Update</a>
+                                        <a class="button edit" href="{% url 'update' %}">Update</a>
+                                        <a class="button delete" style="margin-left: 60px" href="{% url 'delete' %}">Delete</a>
                                     </div>
                                 </div>
                             </div>

@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'Textile_Market.textile_app',
-    'cloudinary'
+    'cloudinary',
+    'phone_field'
 ]
 
 MIDDLEWARE = [

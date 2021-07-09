@@ -21,7 +21,6 @@
         <div class="form-group">
             <label for="username">Username</label>
             {{ user_form.username }}
-            {{ user_form.username.help_text }}
         </div>
         <div class="form-group">
             <label for="password">Password</label>
@@ -31,7 +30,7 @@
         <div class="form-group">
             <label for="password">Confirm Password</label>
             {{ user_form.password2 }}
-            {{ user_form.password2.help_text}}
+            {{ user_form.password2.errors }}
         </div>
         <div class="form-group">
             <label for="first_name">First name</label>
