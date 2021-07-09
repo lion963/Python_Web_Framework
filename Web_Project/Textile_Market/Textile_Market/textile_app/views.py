@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm, ProfileForm, LoginForm
-from Textile_Market.textile_app.models import AddOffer
+from Textile_Market.textile_app.models import AddOffer, Profile
 
 
 def home_page(request):
@@ -41,13 +41,15 @@ def login_view(req):
 
 @login_required(login_url='login')
 @allowed_groups(['Company'])
-def create_offer(request):
+def create_offer(request, pk):
+    profile = Profile.objects.get(pk=pk)
     if request.method == 'GET':
         form = OfferForm()
         return render(request, 'create_offer.html', {'form':form})
     form = OfferForm(request.POST, request.FILES)
     if form.is_valid():
-        offer = form.save()
+        offer = form.save(commit=False)
+        offer.profile = profile
         offer.save()
         return redirect('offers')
     return render(request, 'create_offer.html', {'form':form})
@@ -67,6 +69,8 @@ def register(req):
         profile_form = ProfileForm(req.POST, req.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
+            username = user_form.cleaned_data['username']
+            password = user_form.cleaned_data['password2']
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
@@ -76,9 +80,11 @@ def register(req):
                     user.groups.add(group)
                 if group.name == 'Company' and profile.type=='company':
                     user.groups.add(group)
+            user = authenticate(req, username=username, password=password)
+            if user:
+                login(req, user)
+                return redirect('home')
             return redirect('login')
-        else:
-            print(user_form.errors, profile_form.errors)
     return render(req, 'register.html', context)
 
 def update_profile(request):
@@ -93,9 +99,23 @@ def update_profile(request):
         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
+            username = user_form.cleaned_data['username']
+            password = user_form.cleaned_data['password2']
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
+            groups = Group.objects.all()
+            for group in groups:
+                user.groups.remove(group)
+            for group in groups:
+                if group.name == 'User' and profile.type=='person':
+                    user.groups.add(group)
+                if group.name == 'Company' and profile.type=='company':
+                    user.groups.add(group)
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('home')
             return redirect('login')
     return render(request, 'profile_update.html', context)
 

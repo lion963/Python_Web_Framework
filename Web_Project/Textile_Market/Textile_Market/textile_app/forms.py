@@ -6,7 +6,7 @@ from Textile_Market.textile_app.models import AddOffer, Profile
 class OfferForm(forms.ModelForm):
     class Meta:
         model = AddOffer
-        fields = "__all__"
+        fields = ['garment_type', 'quantity', 'description', 'image']
 
         widgets = {
             'garment_type': forms.TextInput(attrs={'class': 'form-control'}),

@@ -12,7 +12,7 @@
    </style>
 {% endblock %}
 {% block content %}
-    <h1 class="text-center">Update</h1>
+    <h1 class="text-center" style="color: whitesmoke">Update</h1>
     <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post" action="{% url 'update' %}">
         {% csrf_token %}
         {{ user_form.errors }}
@@ -41,6 +41,10 @@
         <div class="form-group">
             <label for="last_name">Last name</label>
             {{ profile_form.last_name }}
+        </div>
+        <div class="form-group">
+            <label for="type">User type</label>
+            {{ profile_form.type }}
         </div>
         <div class="form-group">
             <label for="telephone">Telephone</label>
