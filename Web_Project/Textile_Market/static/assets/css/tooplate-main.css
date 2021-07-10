@@ -1,16 +1,9 @@
-/*
-
-Tooplate 2113 Earth
-
-https://www.tooplate.com/view/2113-earth
-
-*/
 
 @keyframes seq-preloader {
   50% {
     opacity: 1;
   }
-  
+
   100% {
     opacity: 0;
   }
@@ -219,9 +212,6 @@ nav a {
 	z-index: 0;
 	transition: all .5s;
 }
-nav a.active {
-  background-color: rgba(0,0,0,0.8);
-}
 nav a::before {
   content: "";
   position: absolute;
@@ -335,7 +325,7 @@ nav a::before {
   top: 0;
   left: 100%;
   width: 100%;
-  height:100%; 
+  height:100%;
 }
 #image-slider ul li {
   background-repeat: no-repeat;
@@ -439,7 +429,7 @@ nav a::before {
   text-transform: uppercase;
 }
 #tabs ul li span {
-  text-align: center; 
+  text-align: center;
   background-color: transparent;
   border: 3px solid #fff;
   color: #fff;

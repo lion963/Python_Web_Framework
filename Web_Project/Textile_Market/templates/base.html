@@ -5,7 +5,6 @@
 <head>
     <title>Textile Market</title>
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/tooplate-main.css'%}">
     <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
     {% block background %}
@@ -25,7 +24,6 @@
 <nav>
     <ul>
         <li><a href="{% url 'home' %}"><em>Homepage</em></a></li>
-        <li><a href="{% url 'about us' %}"><em>About Us</em></a></li>
         <li><a href="{% url 'offers' %}"><em>Our Offers</em></a></li>
         {% if user.is_authenticated %}
             <li><a href="{% url 'create offer' user.profile.id %}"><em>Create offer</em></a></li>

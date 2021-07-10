@@ -1,11 +1,10 @@
 from django.urls import path
 
-from Textile_Market.textile_app.views import home_page, about_us, offers, login_view, create_offer, offer_details, \
+from Textile_Market.textile_app.views import home_page, offers, login_view, create_offer, offer_details, \
     register, profile, logout_view, update_profile, my_offers, page_401, edit_offer, delete_offer, delete_profile
 
 urlpatterns = [
     path('', home_page, name='home'),
-    path('about', about_us, name='about us'),
     path('offers', offers, name='offers'),
     path('my_offers/<int:pk>', my_offers, name='my offers'),
     path('login', login_view, name='login'),
