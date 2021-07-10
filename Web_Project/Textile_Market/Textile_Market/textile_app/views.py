@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
 
 from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm, ProfileForm, LoginForm
@@ -13,8 +12,10 @@ from Textile_Market.textile_app.models import AddOffer, Profile
 def home_page(request):
     return render(request, 'home_page.html')
 
+
 def about_us(request):
     return render(request, 'about_us.html')
+
 
 def offers(request):
     offers = AddOffer.objects.all()
@@ -23,6 +24,7 @@ def offers(request):
     }
     return render(request, 'offers.html', context)
 
+
 def my_offers(request, pk):
     profile = Profile.objects.get(pk=pk)
     offers = AddOffer.objects.filter(profile_id=profile)
@@ -30,6 +32,7 @@ def my_offers(request, pk):
         'offers': offers
     }
     return render(request, 'my_offers.html', context)
+
 
 def offer_details(request, pk):
     condition = False
@@ -41,6 +44,7 @@ def offer_details(request, pk):
         'condition': condition
     }
     return render(request, 'offer_detail.html', context)
+
 
 def edit_offer(request, pk):
     offer = AddOffer.objects.get(pk=pk)
@@ -56,6 +60,7 @@ def edit_offer(request, pk):
         return redirect('details offer', pk=pk)
     return render(request, 'edit_offer.html', {'form': form})
 
+
 def delete_offer(request, pk):
     offer = AddOffer.objects.get(pk=pk)
     if request.method == 'GET':
@@ -66,6 +71,7 @@ def delete_offer(request, pk):
         return render(request, 'delete_offer.html', {'form': form, 'offer': offer})
     offer.delete()
     return redirect('my offers', pk=request.user.profile.id)
+
 
 def login_view(req):
     form = LoginForm()
@@ -80,6 +86,7 @@ def login_view(req):
                 login(req, user)
                 return redirect('home')
     return render(req, 'login.html', context)
+
 
 @login_required(login_url='login')
 @allowed_groups(['Company'])
@@ -127,6 +134,7 @@ def register(req):
             return redirect('login')
     return render(req, 'register.html', context)
 
+
 def update_profile(request):
     user_form = UserCreationForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
@@ -158,6 +166,7 @@ def update_profile(request):
                 return redirect('home')
             return redirect('login')
     return render(request, 'profile_update.html', context)
+
 
 def delete_profile(request):
     user_form = UserCreationForm(instance=request.user)
@@ -193,6 +202,7 @@ def profile(request):
 def logout_view(req):
     logout(req)
     return redirect('home')
+
 
 def page_401(req):
     return render(req, '401_page.html')
