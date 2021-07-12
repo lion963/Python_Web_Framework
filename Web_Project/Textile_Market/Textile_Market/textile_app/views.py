@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 
 from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm, ProfileForm, LoginForm
@@ -13,12 +14,18 @@ def home_page(request):
     return render(request, 'home_page.html')
 
 
-def offers(request):
-    offers = AddOffer.objects.all()
-    context = {
-        'offers': offers
-    }
-    return render(request, 'offers.html', context)
+# def offers(request):
+#     offers = AddOffer.objects.all()
+#     context = {
+#         'offers': offers
+#     }
+#     return render(request, 'offers.html', context)
+
+
+class OffersView(ListView):
+    context_object_name = 'offers'
+    model = AddOffer
+    template_name = 'offers.html'
 
 
 def my_offers(request, pk):
