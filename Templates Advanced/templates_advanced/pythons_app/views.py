@@ -1,58 +1,33 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.db import transaction
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, FormView
 
 from .decorators import allowed_groups
 from .forms import PythonCreateForm, LoginForm, UserForm, ProfileForm
-from .mixins import GroupRequiredMixin
-from .models import Python, Profile
+from .models import Python
 
 
-# def index(req):
-#     pythons = Python.objects.all()
-#     return render(req, 'index.html', {'pythons': pythons})
 
-class IndexView(ListView):
-    context_object_name = 'pythons'
-    model = Python
-    template_name = 'index.html'
+def index(req):
+    pythons = Python.objects.all()
+    return render(req, 'index.html', {'pythons': pythons})
 
 
-# @login_required(login_url='login')
-# @allowed_groups(['User'])
-# def create(req):
-#     if req.method == 'GET':
-#         form = PythonCreateForm()
-#         return render(req, 'create.html', {'form': form})
-#     else:
-#         form = PythonCreateForm(req.POST, req.FILES)
-#         if form.is_valid():
-#             python = form.save()
-#             python.save()
-#             return redirect('index')
 
-
-class CreatePythonView(GroupRequiredMixin, FormView):
-    template_name = 'create.html'
-    success_url = '/'
-    form_class = PythonCreateForm
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-    group_required = ['User']
-
-
-# class RegisterView(CreateView):
-#     model = Profile
-#     form_class = ProfileForm
-#     success_url = 'index.html'
-#     template_name = 'register.html'
-
+@login_required(login_url='login')
+@allowed_groups(['User'])
+def create(req):
+    if req.method == 'GET':
+        form = PythonCreateForm()
+        return render(req, 'create.html', {'form': form})
+    else:
+        form = PythonCreateForm(req.POST, req.FILES)
+        if form.is_valid():
+            python = form.save()
+            python.save()
+            return redirect('index')
 
 def login_view(req):
     form = LoginForm()

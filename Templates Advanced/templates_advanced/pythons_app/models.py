@@ -4,9 +4,6 @@ from django.db import models
 
 
 # Create your models here.
-from django.urls import reverse
-
-
 class Python(models.Model):
     name = models.CharField(max_length=25)
     description = models.TextField()
@@ -19,6 +16,3 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=30)
     location = models.CharField(max_length=30)
     image = CloudinaryField('image')
-
-    # def get_absolute_url(self):
-    #     return reverse('app:details', kwargs={"pk": self.pk})
