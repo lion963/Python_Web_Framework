@@ -18,6 +18,6 @@ urlpatterns = [
     path('profile', profile, name='profile'),
     path('logout', logout_view, name='logout'),
     path('update', update_profile, name='update'),
-    path('delete', delete_profile, name='delete'),
+    path('delete/<int:pk>', delete_profile, name='delete'),
     path('page_401', page_401, name='page 401'),
 ]

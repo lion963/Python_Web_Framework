@@ -15,6 +15,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="owl-carousel owl-theme">
+                            {% for profile in profiles %}
                             <div class="col-md-12">
                                 <div class="featured-item">
                                 	<a href=""><img src="{{ profile.image.url }}" alt=""></a>
@@ -23,12 +24,17 @@
                                         <h5 class="card-title">{{ profile.last_name }}</h5>
                                         <h5 class="card-title">{{ profile.type }}</h5>
                                         <h5 class="card-title">{{ profile.telephone }}</h5>
-                                        <h5 class="card-title">{{ user.username }}</h5>
-                                        <a class="button edit" href="{% url 'update' %}">Update</a>
-                                        <a class="button delete" style="margin-left: 60px" href="{% url 'delete' %}">Delete</a>
+                                        <h5 class="card-title">{{ profile.user.username }}</h5>
+                                        {% if request.user.is_superuser %}
+                                            <a class="button delete" style="margin-left: 60px" href="{% url 'delete' profile.id %}">Delete</a>
+                                        {% else %}
+                                            <a class="button edit" href="{% url 'update' %}">Update</a>
+                                            <a class="button delete" style="margin-left: 60px" href="{% url 'delete' profile.id %}">Delete</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

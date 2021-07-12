@@ -55,30 +55,30 @@ class CreatePythonView(GroupRequiredMixin, FormView):
 #     template_name = 'register.html'
 
 
-def login_view(req):
+def login_view(request):
     form = LoginForm()
     context = {'form': form}
-    if req.method == 'POST':
-        form = LoginForm(req.POST)
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(req, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
             if user:
-                login(req, user)
+                login(request, user)
                 return redirect('index')
-    return render(req, 'login.html', context)
+    return render(request, 'login.html', context)
 
-def register_view(req):
+def register_view(request):
     user_form = UserForm()
     profile_form = ProfileForm()
     context = {
         'user_form': user_form,
         'profile_form': profile_form
     }
-    if req.method == 'POST':
-        user_form = UserForm(req.POST)
-        profile_form = ProfileForm(req.POST, req.FILES)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
@@ -93,7 +93,7 @@ def register_view(req):
             return redirect('index')
         else:
             print(user_form.errors, profile_form.errors)
-    return render(req, 'register.html', context)
+    return render(request, 'register.html', context)
 
 
 def profile_view(request):
@@ -146,11 +146,11 @@ def update_profile(request):
 #     return render(req, 'register.html', context)
 
 
-def logout_view(req):
-    logout(req)
+def logout_view(request):
+    logout(request)
     return redirect('index')
 
-def page_401(req):
-    return render(req, '401_page.html')
+def page_401(request):
+    return render(request, '401_page.html')
 
 

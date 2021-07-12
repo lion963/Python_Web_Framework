@@ -31,7 +31,11 @@
                 <li><a href="{% url 'my offers' user.profile.id %}"><em>My offers</em></a></li>
             {% endif %}
             <li><a href="{% url 'logout' %}"><em>Wellcome {{ user.profile.first_name }}! Logout</em></a></li>
-            <li><a href="{% url 'profile' %}"><em>Profile</em></a></li>
+            {% if user.is_superuser %}
+                <li><a href="{% url 'profile' %}"><em>Profiles</em></a></li>
+            {% else %}
+                <li><a href="{% url 'profile' %}"><em>Profile</em></a></li>
+            {% endif %}
         {% else %}
             <li><a href="{% url 'page 401' %}"><em>Create offer</em></a></li>
             <li><a href="{% url 'register' %}"><em>Register</em></a></li>

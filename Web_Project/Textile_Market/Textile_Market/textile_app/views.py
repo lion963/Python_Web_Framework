@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
@@ -76,19 +76,32 @@ def delete_offer(request, pk):
     return redirect('my offers', pk=request.user.profile.id)
 
 
-def login_view(req):
+def login_view(request):
+    wrong_credentials = False
     form = LoginForm()
-    context = {'form': form}
-    if req.method == 'POST':
-        form = LoginForm(req.POST)
+    context = {
+        'form': form,
+        'wrong_credentials': wrong_credentials
+    }
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(req, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
             if user:
-                login(req, user)
+                if user.is_superuser:
+
+                    if len(Profile.objects.filter(user=user))==0:
+                        profile = Profile(user=user, type='company', image='/static/assets/images/profile.jpg').save()
+                        login(request, user)
+                        return redirect('update')
+                login(request, user)
                 return redirect('home')
-    return render(req, 'login.html', context)
+            else:
+                context['wrong_credentials'] = True
+                return render(request, 'login.html', context)
+    return render(request, 'login.html', context)
 
 
 @login_required(login_url='login')
@@ -107,16 +120,16 @@ def create_offer(request, pk):
     return render(request, 'create_offer.html', {'form':form})
 
 
-def register(req):
+def register(request):
     user_form = UserCreationForm()
     profile_form = ProfileForm()
     context = {
         'user_form': user_form,
         'profile_form': profile_form
     }
-    if req.method == 'POST':
-        user_form = UserCreationForm(req.POST)
-        profile_form = ProfileForm(req.POST, req.FILES)
+    if request.method == 'POST':
+        user_form = UserCreationForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             username = user_form.cleaned_data['username']
@@ -130,12 +143,12 @@ def register(req):
                     user.groups.add(group)
                 if group.name == 'Company' and profile.type=='company':
                     user.groups.add(group)
-            user = authenticate(req, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
             if user:
-                login(req, user)
+                login(request, user)
                 return redirect('home')
             return redirect('login')
-    return render(req, 'register.html', context)
+    return render(request, 'register.html', context)
 
 
 def update_profile(request):
@@ -171,12 +184,15 @@ def update_profile(request):
     return render(request, 'profile_update.html', context)
 
 
-def delete_profile(request):
-    user_form = UserCreationForm(instance=request.user)
-    profile_form = ProfileForm(instance=request.user.profile)
+def delete_profile(request, pk):
+    profile = Profile.objects.get(pk=pk)
+    user = profile.user
+    user_form = UserCreationForm(instance=user)
+    profile_form = ProfileForm(instance=profile)
     context = {
         'user_form': user_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'profile': profile
     }
     if request.method == 'GET':
         for form in [user_form, profile_form]:
@@ -184,8 +200,6 @@ def delete_profile(request):
                 form.fields[field].widget.attrs['readonly'] = True
                 form.fields[field].widget.attrs['disabled'] = True
         return render(request, 'delete_profile.html', context)
-    user = request.user
-    profile = user.profile
     user.delete()
     profile.delete()
     return redirect('home')
@@ -193,19 +207,20 @@ def delete_profile(request):
 
 
 def profile(request):
-    user = request.user
-    profile = request.user.profile
+    if request.user.is_superuser:
+        profiles = Profile.objects.all()
+    else:
+        profiles = [request.user.profile]
     context = {
-        'user': user,
-        'profile': profile
+        'profiles': profiles,
     }
     return render(request, 'profile.html', context)
 
 
-def logout_view(req):
-    logout(req)
+def logout_view(request):
+    logout(request)
     return redirect('home')
 
 
-def page_401(req):
-    return render(req, '401_page.html')
+def page_401(request):
+    return render(request, '401_page.html')

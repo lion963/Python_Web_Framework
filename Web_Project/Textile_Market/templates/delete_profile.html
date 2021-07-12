@@ -13,7 +13,7 @@
 {% endblock %}
 {% block content %}
     <h1 class="text-center" style="color: whitesmoke">Delete</h1>
-    <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post" action="{% url 'delete' %}">
+    <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post" action="{% url 'delete' profile.id %}">
         {% csrf_token %}
         {{ user_form.errors }}
         {{ profile_form.errors }}

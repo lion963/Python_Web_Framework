@@ -10,10 +10,10 @@ class Profile(models.Model):
         ('person', 'person')
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30, blank=False)
+    last_name = models.CharField(max_length=30, blank=False)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    telephone = models.CharField(max_length=20)
+    telephone = models.CharField(max_length=20, blank=False)
     image = CloudinaryField('image')
 
 
