@@ -14,4 +14,5 @@ urlpatterns = [
     path('profile', views.profile_view, name='profile'),
     path('update', views.update_profile, name='update'),
 
+
 ]

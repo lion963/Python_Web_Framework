@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 
     'Textile_Market.textile_app',
     'cloudinary',
-    'phone_field'
 ]
 
 MIDDLEWARE = [

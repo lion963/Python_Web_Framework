@@ -16,6 +16,7 @@ from .models import Python, Profile
 #     pythons = Python.objects.all()
 #     return render(req, 'index.html', {'pythons': pythons})
 
+
 class IndexView(ListView):
     context_object_name = 'pythons'
     model = Python
