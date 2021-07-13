@@ -13,10 +13,13 @@
 {% endblock %}
 {% block content %}
     <h1 class="text-center" style="color: whitesmoke">Update</h1>
-    <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post" action="{% url 'update' %}">
+    <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post" action="{% url 'update' profile.id %}">
         {% csrf_token %}
         {{ user_form.errors }}
         {{ profile_form.errors }}
+        {% if wrong_credentials %}
+           <h6 style="color: red"><strong>Please fill out correct data!</strong></h6>
+        {% endif %}
         <div class="form-group">
             <label for="username">Username</label>
             {{ user_form.username }}

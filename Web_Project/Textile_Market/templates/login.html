@@ -16,7 +16,7 @@
     <form class="col-lg-6 offset-lg-3" method="post" action="{% url 'login' %}">
         {% csrf_token %}
         {% if wrong_credentials %}
-           <h6 style="color: red"><strong>Please fill out correct 'Username' and 'Password'</strong></h6>
+           <h6 style="color: red"><strong>Please fill out correct 'Username' and 'Password'!</strong></h6>
         {% endif %}
         <div class="form-group">
             <label for="username">Username</label>

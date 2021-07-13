@@ -17,6 +17,9 @@
         {% csrf_token %}
         {{ user_form.errors}}
         {{ profile_form.errors }}
+        {% if wrong_credentials %}
+           <h6 style="color: red"><strong>Please fill out correct data!</strong></h6>
+        {% endif %}
         <div class="form-group">
             <label for="username">Username</label>
             {{ user_form.username }}

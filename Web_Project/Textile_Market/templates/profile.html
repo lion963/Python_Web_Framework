@@ -25,12 +25,8 @@
                                         <h5 class="card-title">{{ profile.type }}</h5>
                                         <h5 class="card-title">{{ profile.telephone }}</h5>
                                         <h5 class="card-title">{{ profile.user.username }}</h5>
-                                        {% if request.user.is_superuser %}
-                                            <a class="button delete" style="margin-left: 60px" href="{% url 'delete' profile.id %}">Delete</a>
-                                        {% else %}
-                                            <a class="button edit" href="{% url 'update' %}">Update</a>
-                                            <a class="button delete" style="margin-left: 60px" href="{% url 'delete' profile.id %}">Delete</a>
-                                        {% endif %}
+                                        <a class="button edit" href="{% url 'update' profile.id %}">Update</a>
+                                        <a class="button delete" style="margin-left: 60px" href="{% url 'delete' profile.id %}">Delete</a>
                                     </div>
                                 </div>
                             </div>

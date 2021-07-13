@@ -40,7 +40,7 @@ def my_offers(request, pk):
 def offer_details(request, pk):
     condition = False
     offer = AddOffer.objects.get(pk=pk)
-    if offer.profile.id == request.user.profile.id:
+    if offer.profile.id == request.user.profile.id or request.user.is_superuser:
         condition = True
     context = {
         'offer': offer,
@@ -93,9 +93,9 @@ def login_view(request):
                 if user.is_superuser:
 
                     if len(Profile.objects.filter(user=user))==0:
-                        profile = Profile(user=user, type='company', image='/static/assets/images/profile.jpg').save()
+                        profile = Profile(user=user, first_name='SUPERUSER').save()
                         login(request, user)
-                        return redirect('update')
+                        return redirect('profile')
                 login(request, user)
                 return redirect('home')
             else:
@@ -116,16 +116,18 @@ def create_offer(request, pk):
         offer = form.save(commit=False)
         offer.profile = profile
         offer.save()
-        return redirect('offers')
+        return redirect('my offers', profile.id)
     return render(request, 'create_offer.html', {'form':form})
 
 
 def register(request):
+    wrong_credentials = False
     user_form = UserCreationForm()
     profile_form = ProfileForm()
     context = {
         'user_form': user_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'wrong_credentials': wrong_credentials
     }
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
@@ -147,20 +149,27 @@ def register(request):
             if user:
                 login(request, user)
                 return redirect('home')
-            return redirect('login')
+        else:
+            context['wrong_credentials'] = True
+            return render(request, 'register.html', context)
     return render(request, 'register.html', context)
 
 
-def update_profile(request):
-    user_form = UserCreationForm(instance=request.user)
-    profile_form = ProfileForm(instance=request.user.profile)
+def update_profile(request, pk):
+    wrong_credentials = False
+    profile = Profile.objects.get(pk=pk)
+    user = profile.user
+    user_form = UserCreationForm(instance=user)
+    profile_form = ProfileForm(instance=profile)
     context = {
         'user_form': user_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'profile': profile,
+        'wrong_credentials': wrong_credentials
     }
     if request.method == 'POST':
-        user_form = UserCreationForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        user_form = UserCreationForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             username = user_form.cleaned_data['username']
@@ -181,6 +190,9 @@ def update_profile(request):
                 login(request, user)
                 return redirect('home')
             return redirect('login')
+        else:
+            context['wrong_credentials'] = True
+            return render(request, 'profile_update.html', context)
     return render(request, 'profile_update.html', context)
 
 
