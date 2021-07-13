@@ -1,5 +1,5 @@
 **Django Framework Project**
-**"Textile Market"** - application for publishung a textile manufacturing offers in order to be achieved best price and terms.
+**"Textile Market"** - application for publishung textile manufacturing offers in order to be achieved best price and terms.
 
 **The application:**
 
