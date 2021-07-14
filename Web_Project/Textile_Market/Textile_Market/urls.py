@@ -20,5 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Textile_Market.textile_app.urls'))
+    path('', include('Textile_Market.textile_app.urls')),
+    path('', include('Textile_Market.textile_auth.urls')),
+    path('', include('Textile_Market.textile_profile.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

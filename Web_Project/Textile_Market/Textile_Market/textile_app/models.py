@@ -1,26 +1,8 @@
 from cloudinary.models import CloudinaryField
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from Textile_Market.textile_app.validators import validate_phone
-
-
-class Profile(models.Model):
-    TYPE_CHOICES = (
-        ('company', 'company'),
-        ('person', 'person')
-    )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, blank=False)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    telephone = models.CharField(
-        max_length=20,
-        blank=False,
-        validators=[validate_phone]
-    )
-    image = CloudinaryField('image')
+from Textile_Market.textile_profile.models import Profile
 
 
 class AddOffer(models.Model):

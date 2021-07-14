@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from Textile_Market.textile_app.models import AddOffer, Profile
+from Textile_Market.textile_app.models import AddOffer
 
 admin.site.register(AddOffer)
-admin.site.register(Profile)
+

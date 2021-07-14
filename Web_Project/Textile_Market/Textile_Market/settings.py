@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'Textile_Market.textile_auth',
+    'Textile_Market.textile_profile',
     'Textile_Market.textile_app',
     'cloudinary',
 ]
