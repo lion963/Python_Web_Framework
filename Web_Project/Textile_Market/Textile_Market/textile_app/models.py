@@ -10,4 +10,4 @@ class AddOffer(models.Model):
     garment_type = models.TextField(max_length=30)
     quantity = models.IntegerField(validators=[MinValueValidator(1)])
     description = models.TextField(max_length=200)
-    image = CloudinaryField('image')
+    image = CloudinaryField('image', blank=True)

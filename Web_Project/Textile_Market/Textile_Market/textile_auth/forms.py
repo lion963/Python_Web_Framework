@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
 
 class LoginForm(forms.Form):
@@ -13,10 +15,11 @@ class LoginForm(forms.Form):
     )
 
     password = forms.CharField(
-        widget= forms.PasswordInput(
+        widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter password',
             }
         )
     )
+

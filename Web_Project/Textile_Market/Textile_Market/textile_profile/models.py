@@ -19,4 +19,4 @@ class Profile(models.Model):
         blank=False,
         validators=[validate_phone]
     )
-    image = CloudinaryField('image')
+    image = CloudinaryField('image', blank=True)
