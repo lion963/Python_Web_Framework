@@ -34,7 +34,6 @@ class LoginForm(forms.Form):
             raise ValidationError('Email and/or password incorrect')
 
 
-
 class ProfileRegisterForm(forms.ModelForm):
     class Meta:
         model = Profile

@@ -1,9 +1,11 @@
 from django.urls import path
 
-from Textile_Market.textile_app.views import home_page, create_offer, offer_details, my_offers, page_401, edit_offer, delete_offer, OffersView
+from Textile_Market.textile_app.views import create_offer, offer_details, my_offers, page_401, edit_offer, \
+    delete_offer, OffersView, HomePageView
 
 urlpatterns = [
-    path('', home_page, name='home'),
+    path('', HomePageView.as_view(), name='home'),
+    # path('', home_page, name='home'),
     # path('offers', offers, name='offers'),
     path('offers', OffersView.as_view(), name='offers'),
     path('my_offers/<int:pk>', my_offers, name='my offers'),

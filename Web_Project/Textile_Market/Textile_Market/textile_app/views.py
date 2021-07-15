@@ -1,23 +1,18 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.views.generic import View, ListView, TemplateView
 
 from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm
 from Textile_Market.textile_app.models import AddOffer
 from Textile_Market.textile_profile.models import Profile
 
+class HomePageView(TemplateView):
+    template_name = 'home_page.html'
 
-def home_page(request):
-    return render(request, 'home_page.html')
+# def home_page(request):
+#     return render(request, 'home_page.html')
 
-
-# def offers(request):
-#     offers = AddOffer.objects.all()
-#     context = {
-#         'offers': offers
-#     }
-#     return render(request, 'offers.html', context)
 
 @login_required(login_url='login')
 @allowed_groups(['Company'])
@@ -40,6 +35,12 @@ class OffersView(ListView):
     model = AddOffer
     template_name = 'offers.html'
 
+# def offers(request):
+#     offers = AddOffer.objects.all()
+#     context = {
+#         'offers': offers
+#     }
+#     return render(request, 'offers.html', context)
 
 def my_offers(request, pk):
     profile = Profile.objects.get(pk=pk)
