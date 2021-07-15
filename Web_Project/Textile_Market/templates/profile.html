@@ -20,11 +20,20 @@
                                 <div class="featured-item">
                                 	<a href=""><img src="{{ profile.image.url }}" alt=""></a>
                                     <div class="down-content">
-                                        <h5 class="card-title">{{ profile.first_name }}</h5>
-                                        <h5 class="card-title">{{ profile.last_name }}</h5>
-                                        <h5 class="card-title">{{ profile.type }}</h5>
-                                        <h5 class="card-title">{{ profile.telephone }}</h5>
-                                        <h5 class="card-title">{{ profile.user.username }}</h5>
+                                        <div id="type" class="form-group">
+                                            <label>First name: <strong>{{ profile.first_name }}</strong></label>
+                                        </div>
+                                        <div id="type" class="form-group">
+                                            <label>Last name: <strong>{{ profile.last_name }}</strong></label>
+                                        </div>
+                                        <div id="type" class="form-group">
+                                            <label>User type: <strong>{{ profile.type }}</strong></label>
+                                        </div>
+                                        <div id="type" class="form-group">
+                                            <label>Telephone: <strong>{{ profile.telephone }}</strong></label>
+                                        </div><div id="type" class="form-group">
+                                            <label>Username: <strong>{{ profile.user.username }}</strong></label>
+                                        </div>
                                         <a class="button edit" href="{% url 'update' profile.id %}">Update</a>
                                         <a class="button delete" style="margin-left: 60px" href="{% url 'delete' profile.id %}">Delete</a>
                                     </div>

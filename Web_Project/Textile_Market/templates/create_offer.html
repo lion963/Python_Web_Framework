@@ -15,6 +15,7 @@
     <h1 class="text-center">Create Offer</h1>
     <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post">
         {% csrf_token %}
+        {{ form.errors }}
         <div class="form-group">
             <label for="garment_type">Garment type</label>
             {{ form.garment_type }}

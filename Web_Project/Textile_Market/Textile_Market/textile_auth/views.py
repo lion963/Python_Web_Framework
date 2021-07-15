@@ -3,8 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 
-from Textile_Market.textile_auth.forms import LoginForm
-from Textile_Market.textile_profile.forms import ProfileForm
+from Textile_Market.textile_auth.forms import LoginForm, ProfileRegisterForm
 from Textile_Market.textile_profile.models import Profile
 
 
@@ -23,16 +22,16 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 if user.is_superuser:
-
                     if len(Profile.objects.filter(user=user)) == 0:
                         profile = Profile(user=user, first_name='SUPERUSER').save()
                         login(request, user)
-                        return redirect('profile')
+                        return redirect('home')
                 login(request, user)
                 return redirect('home')
             else:
                 context['wrong_credentials'] = True
                 return render(request, 'login.html', context)
+        context['wrong_credentials'] = True
     return render(request, 'login.html', context)
 
 
@@ -44,7 +43,7 @@ def logout_view(request):
 def register(request):
     wrong_credentials = False
     user_form = UserCreationForm()
-    profile_form = ProfileForm()
+    profile_form = ProfileRegisterForm()
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
@@ -52,7 +51,7 @@ def register(request):
     }
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
-        profile_form = ProfileForm(request.POST, request.FILES)
+        profile_form = ProfileRegisterForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             username = user_form.cleaned_data['username']
@@ -75,7 +74,3 @@ def register(request):
             return render(request, 'register.html', context)
     return render(request, 'register.html', context)
 
-
-def logout_view(request):
-    logout(request)
-    return redirect('home')
