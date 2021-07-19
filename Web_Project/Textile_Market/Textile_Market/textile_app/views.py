@@ -8,7 +8,7 @@ from Textile_Market.textile_app.models import AddOffer
 from Textile_Market.textile_profile.models import Profile
 
 class HomePageView(TemplateView):
-    template_name = 'home_page.html'
+    template_name = 'common/home_page.html'
 
 # def home_page(request):
 #     return render(request, 'home_page.html')
@@ -20,20 +20,20 @@ def create_offer(request, pk):
     profile = Profile.objects.get(pk=pk)
     if request.method == 'GET':
         form = OfferForm()
-        return render(request, 'create_offer.html', {'form':form})
+        return render(request, 'app/create_offer.html', {'form':form})
     form = OfferForm(request.POST, request.FILES)
     if form.is_valid():
         offer = form.save(commit=False)
         offer.profile = profile
         offer.save()
         return redirect('my offers', profile.id)
-    return render(request, 'create_offer.html', {'form':form})
+    return render(request, 'app/create_offer.html', {'form':form})
 
 
 class OffersView(ListView):
     context_object_name = 'offers'
     model = AddOffer
-    template_name = 'offers.html'
+    template_name = 'common/offers.html'
 
 # def offers(request):
 #     offers = AddOffer.objects.all()
@@ -48,7 +48,7 @@ def my_offers(request, pk):
     context = {
         'offers': offers
     }
-    return render(request, 'my_offers.html', context)
+    return render(request, 'app/my_offers.html', context)
 
 
 def offer_details(request, pk):
@@ -60,7 +60,7 @@ def offer_details(request, pk):
         'offer': offer,
         'condition': condition
     }
-    return render(request, 'offer_detail.html', context)
+    return render(request, 'app/offer_detail.html', context)
 
 
 def edit_offer(request, pk):
@@ -68,14 +68,14 @@ def edit_offer(request, pk):
     profile = Profile.objects.get(pk=offer.profile.id)
     if request.method == 'GET':
         form = OfferForm(instance=offer)
-        return render(request, 'edit_offer.html', {'form': form})
+        return render(request, 'app/edit_offer.html', {'form': form})
     form = OfferForm(request.POST, request.FILES, instance=offer)
     if form.is_valid():
         offer = form.save(commit=False)
         offer.profile = profile
         offer.save()
         return redirect('details offer', pk=pk)
-    return render(request, 'edit_offer.html', {'form': form})
+    return render(request, 'app/edit_offer.html', {'form': form})
 
 
 def delete_offer(request, pk):
@@ -85,9 +85,9 @@ def delete_offer(request, pk):
         for field in form.fields:
             form.fields[field].widget.attrs['readonly'] = True
             form.fields[field].widget.attrs['disabled'] = True
-        return render(request, 'delete_offer.html', {'form': form, 'offer': offer})
+        return render(request, 'app/delete_offer.html', {'form': form, 'offer': offer})
     offer.delete()
     return redirect('my offers', pk=request.user.profile.id)
 
 def page_401(request):
-    return render(request, '401_page.html')
+    return render(request, 'common/401_page.html')

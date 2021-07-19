@@ -15,7 +15,7 @@ def profile(request):
     context = {
         'profiles': profiles,
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'app_profile/profile.html', context)
 
 
 def update_profile(request, pk):
@@ -29,7 +29,7 @@ def update_profile(request, pk):
             'profile_form': profile_form,
             'profile': profile,
         }
-        return render(request, 'profile_update.html', context)
+        return render(request, 'app_profile/profile_update.html', context)
 
     profile = Profile.objects.get(pk=pk)
     user = profile.user
@@ -55,11 +55,13 @@ def update_profile(request, pk):
                 user.groups.add(group)
             if group.name == 'Company' and profile.type == 'company':
                 user.groups.add(group)
+        if request.user.is_superuser:
+            return redirect('profile')
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('home')
-    return render(request, 'profile_update.html', context)
+            return redirect('profile')
+    return render(request, 'app_profile/profile_update.html', context)
 
 
 def delete_profile(request, pk):
@@ -77,7 +79,7 @@ def delete_profile(request, pk):
             for field in form.fields:
                 form.fields[field].widget.attrs['readonly'] = True
                 form.fields[field].widget.attrs['disabled'] = True
-        return render(request, 'delete_profile.html', context)
+        return render(request, 'app_profile/delete_profile.html', context)
     user.delete()
     profile.delete()
     return redirect('home')

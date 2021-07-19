@@ -13,7 +13,7 @@ def login_view(request):
         context = {
             'form': form,
         }
-        return render(request, 'login.html', context)
+        return render(request, 'app_auth/login.html', context)
 
     form = LoginForm(request.POST)
     context = {
@@ -31,7 +31,7 @@ def login_view(request):
                     return redirect('home')
             login(request, user)
             return redirect('home')
-    return render(request, 'login.html', context)
+    return render(request, 'app_auth/login.html', context)
 
 
 def logout_view(request):
@@ -47,7 +47,7 @@ def register(request):
             'user_form': user_form,
             'profile_form': profile_form,
         }
-        return render(request, 'register.html', context)
+        return render(request, 'app_auth/register.html', context)
 
     user_form = UserCreationForm(request.POST)
     profile_form = ProfileRegisterForm(request.POST, request.FILES)
@@ -72,7 +72,7 @@ def register(request):
         if user:
             login(request, user)
             return redirect('home')
-    return render(request, 'register.html', context)
+    return render(request, 'app_auth/register.html', context)
 
 
 
