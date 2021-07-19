@@ -12,14 +12,11 @@
     </style>
 {% endblock %}
 {% block content %}
-<h1 class="text-center">Register</h1>
+    <h1 class="text-center">Register</h1>
     <form enctype="multipart/form-data" class="col-lg-6 offset-lg-3" method="post" action="{% url 'register' %}">
         {% csrf_token %}
-        {{ user_form.errors}}
-        {{ profile_form.errors }}
-        {% if wrong_credentials %}
-           <h6 style="color: red"><strong>Please fill out correct data!</strong></h6>
-        {% endif %}
+        <h6 style="color: red"><strong>{{ user_form.errors }}</strong></h6>
+        <h6 style="color: red"><strong>{{ profile_form.errors }}</strong></h6>
         <div class="form-group">
             <label for="username">Username</label>
             {{ user_form.username }}

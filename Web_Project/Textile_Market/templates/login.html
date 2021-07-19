@@ -12,13 +12,10 @@
     </style>
 {% endblock %}
 {% block content %}
- <h1 class="text-center" style="color: white">Sign in</h1>
-    <form class="col-lg-6 offset-lg-3" method="post" action="{% url 'login' %}">
+    <h1 class="text-center" style="color: white">Sign in</h1>
+    <form class="col-lg-6 offset-lg-3" method="post" >
         {% csrf_token %}
-        {{ form.errors }}
-        {% if wrong_credentials %}
-           <h6 style="color: red"><strong>Please fill out correct 'Username' and 'Password'!</strong></h6>
-        {% endif %}
+        <h6 style="color: red"><strong>{{ form.errors }}</strong></h6>
         <div class="form-group">
             <label for="username">Username</label>
             {{ form.username }}

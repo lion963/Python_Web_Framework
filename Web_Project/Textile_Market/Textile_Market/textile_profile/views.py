@@ -19,43 +19,46 @@ def profile(request):
 
 
 def update_profile(request, pk):
-    wrong_credentials = False
+    if request.method == 'GET':
+        profile = Profile.objects.get(pk=pk)
+        user = profile.user
+        user_form = UserCreationForm(instance=user)
+        profile_form = ProfileForm(instance=profile)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'profile': profile,
+        }
+        return render(request, 'profile_update.html', context)
+
     profile = Profile.objects.get(pk=pk)
     user = profile.user
-    user_form = UserCreationForm(instance=user)
-    profile_form = ProfileForm(instance=profile)
+    user_form = UserCreationForm(request.POST, instance=user)
+    profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
         'profile': profile,
-        'wrong_credentials': wrong_credentials
     }
-    if request.method == 'POST':
-        user_form = UserCreationForm(request.POST, instance=user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            username = user_form.cleaned_data['username']
-            password = user_form.cleaned_data['password2']
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-            groups = Group.objects.all()
-            for group in groups:
-                user.groups.remove(group)
-            for group in groups:
-                if group.name == 'User' and profile.type == 'person':
-                    user.groups.add(group)
-                if group.name == 'Company' and profile.type == 'company':
-                    user.groups.add(group)
-            user = authenticate(request, username=username, password=password)
-            if user:
-                login(request, user)
-                return redirect('home')
-            return redirect('login')
-        else:
-            context['wrong_credentials'] = True
-            return render(request, 'profile_update.html', context)
+    if user_form.is_valid() and profile_form.is_valid():
+        user = user_form.save()
+        username = user_form.cleaned_data['username']
+        password = user_form.cleaned_data['password2']
+        profile = profile_form.save(commit=False)
+        profile.user = user
+        profile.save()
+        groups = Group.objects.all()
+        for group in groups:
+            user.groups.remove(group)
+        for group in groups:
+            if group.name == 'User' and profile.type == 'person':
+                user.groups.add(group)
+            if group.name == 'Company' and profile.type == 'company':
+                user.groups.add(group)
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('home')
     return render(request, 'profile_update.html', context)
 
 

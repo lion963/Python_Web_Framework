@@ -6,6 +6,7 @@ from Textile_Market.textile_profile.models import Profile
 
 
 class LoginForm(forms.Form):
+
     username = forms.CharField(
         max_length=30,
         widget=forms.TextInput(
@@ -31,7 +32,7 @@ class LoginForm(forms.Form):
             password=self.cleaned_data['password'],
         )
         if not self.user:
-            raise ValidationError('Email and/or password incorrect')
+            raise ValidationError('Username and/or password incorrect')
 
 
 class ProfileRegisterForm(forms.ModelForm):
