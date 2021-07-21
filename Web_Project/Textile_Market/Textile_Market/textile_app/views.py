@@ -20,14 +20,14 @@ def create_offer(request, pk):
     profile = Profile.objects.get(pk=pk)
     if request.method == 'GET':
         form = OfferForm()
-        return render(request, 'app/create_offer.html', {'form':form})
+        return render(request, 'app/create_offer.html', context={'form':form})
     form = OfferForm(request.POST, request.FILES)
     if form.is_valid():
         offer = form.save(commit=False)
         offer.profile = profile
         offer.save()
         return redirect('my offers', profile.id)
-    return render(request, 'app/create_offer.html', {'form':form})
+    return render(request, 'app/create_offer.html', context={'form':form})
 
 
 class OffersView(ListView):
