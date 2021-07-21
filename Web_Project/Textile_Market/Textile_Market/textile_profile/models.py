@@ -11,8 +11,8 @@ class Profile(models.Model):
         ('person', 'person')
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, blank=False)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     telephone = models.CharField(
         max_length=20,
