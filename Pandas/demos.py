@@ -26,10 +26,10 @@ from matplotlib import figure
 # print(df.describe())
 
 
-titanic = pd.read_csv('titanic.csv')
-# # print(titanic.head(10))
-# # print(titanic.tail(10))
-# # print(titanic.dtypes)
+# titanic = pd.read_csv('titanic.csv')
+# print(titanic.head(10))
+# print(titanic.tail(10))
+# print(titanic.dtypes)
 #
 # # titanic.to_excel("titanic.xlsx", sheet_name="passengers", index=False)
 # titanic.info()
@@ -45,14 +45,15 @@ titanic = pd.read_csv('titanic.csv')
 # class_23 = titanic[titanic["Pclass"].isin([2, 3])]
 # # class_23 = titanic[(titanic["Pclass"] == 2) | (titanic["Pclass"] == 3)]
 # age_no_na = titanic[titanic["Age"].notna()]
+# print(above_35, class_23, age_no_na)
 
 # air_quality = pd.read_csv('air_quality_no2.csv', index_col=0, parse_dates=True)
 # print(air_quality.head(10))
 # plot = air_quality.plot()
 # print(plot)
-# air_quality["station_paris"].plot()
-# air_quality.plot.scatter(x="station_london", y="station_paris", alpha=0.5)
-# air_quality.plot.box()
+# print(air_quality["station_paris"].plot())
+# print(air_quality.plot.scatter(x="station_london", y="station_paris", alpha=0.5))
+# print(air_quality.plot.box())
 # axs = air_quality.plot.area(figsize=(12, 4), subplots=True)
 
 
@@ -70,21 +71,23 @@ titanic = pd.read_csv('titanic.csv')
 # air_quality_renamed = air_quality_renamed.rename(columns=str.lower)
 
 
-titanic["Age"].mean()
-titanic[["Age", "Fare"]].median()
-titanic.agg(
-{
-"Age": ["min", "max", "median", "skew"],
-"Fare": ["min", "max", "median", "mean"],
-}
-)
-titanic[["Sex", "Age"]].groupby("Sex").mean()
-titanic.groupby("Sex").mean()
-titanic.groupby(["Sex", "Pclass"])["Fare"].mean()
-
-titanic["Name"].str.lower()
-titanic["Name"].str.split(",")
-titanic["Surname"] = titanic["Name"].str.split(",").str.get(0)
-titanic[titanic["Name"].str.contains("Countess")]
-titanic["Name"].str.len()
-titanic["Sex_short"] = titanic["Sex"].replace({"male": "M", "female": "F"})
+# print(titanic["Age"].mean())
+# print(titanic[["Age", "Fare"]].median())
+# print(titanic.agg(
+# {
+# "Age": ["min", "max", "median", "skew"],
+# "Fare": ["min", "max", "median", "mean"],
+# }
+# ))
+# print(titanic[["Sex", "Age"]].groupby("Sex").mean())
+# print(titanic.groupby("Sex").mean())
+# print(titanic.groupby(["Sex", "Pclass"])["Fare"].mean())
+#
+# titanic["Name"].str.lower()
+# titanic["Name"].str.split(",")
+# titanic["Surname"] = titanic["Name"].str.split(",").str.get(0)
+# print(titanic["Surname"])
+# print(titanic["Name"].str.contains("countess"))
+# print(titanic["Name"].str.len())
+# titanic["Sex_short"] = titanic["Sex"].replace({"male": "M", "female": "F"})
+# print(titanic["Sex_short"])

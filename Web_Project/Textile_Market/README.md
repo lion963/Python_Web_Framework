@@ -11,7 +11,7 @@
 
 **-public part (A part of the website, which is accessible by everyone – un/authenticated users and admins);**
 
-**-private part (accessible only by authenticated user and admins) where permissitions depends of user's group ("User" or "Company");**
+**-private part (accessible only by authenticated user and admins) where permissions depends of user's group ("User" or "Company");**
 
 **-admin part (accessible only to admins);**
 
@@ -33,9 +33,9 @@
 
 **-template inheritance;**
 
-**-source control system Github or Gitlab;**
+**-source control system Github;**
 
-**-class-based views (ListView);**
+**-class-based views;**
 
 **-extended Django user.**
 
