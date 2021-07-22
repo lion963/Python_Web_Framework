@@ -11,8 +11,11 @@ def profile_complete_notification(context):
         user_id = context.request.user.id
         profile = Profile.objects.get(pk=user_id)
         complete = all([profile.first_name, profile.last_name, profile.type, profile.telephone, profile.image])
-        if not complete:
-            return {'is_complete': False}
-        return {'is_complete': True}
+        if complete:
+            return {'not_complete': False,
+                    'profile': profile}
+        return {'not_complete': True,
+                'profile': profile}
     else:
-        return {'is_complete': True}
+        return {'not_complete': True,
+                'profile': None}
