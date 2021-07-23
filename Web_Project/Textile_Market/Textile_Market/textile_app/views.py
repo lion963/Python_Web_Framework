@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.views.generic import View, ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
 
 from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm
 from Textile_Market.textile_app.models import AddOffer
 from Textile_Market.textile_profile.models import Profile
+
 
 class HomePageView(TemplateView):
     template_name = 'common/home_page.html'
@@ -42,25 +43,49 @@ class OffersView(ListView):
 #     }
 #     return render(request, 'offers.html', context)
 
-def my_offers(request, pk):
-    profile = Profile.objects.get(pk=pk)
-    offers = AddOffer.objects.filter(profile_id=profile)
-    context = {
-        'offers': offers
-    }
-    return render(request, 'app/my_offers.html', context)
+# def my_offers(request, pk):
+#     profile = Profile.objects.get(pk=pk)
+#     offers = AddOffer.objects.filter(profile_id=profile)
+#     context = {
+#         'offers': offers
+#     }
+#     return render(request, 'app/my_offers.html', context)
+
+class MyOffersView(ListView):
+    model = AddOffer
+    template_name = 'app/my_offers.html'
+    context_object_name = 'offers'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['offers'] = context['offers'].filter(profile_id=self.request.user.profile)
+        return context
 
 
-def offer_details(request, pk):
-    condition = False
-    offer = AddOffer.objects.get(pk=pk)
-    if offer.profile.id == request.user.profile.id or request.user.is_superuser:
-        condition = True
-    context = {
-        'offer': offer,
-        'condition': condition
-    }
-    return render(request, 'app/offer_detail.html', context)
+# def offer_details(request, pk):
+#     condition = False
+#     offer = AddOffer.objects.get(pk=pk)
+#     if offer.profile.id == request.user.profile.id or request.user.is_superuser:
+#         condition = True
+#     context = {
+#         'offer': offer,
+#         'condition': condition
+#     }
+#     return render(request, 'app/offer_detail.html', context)
+
+class OfferDetailView(DetailView):
+    model = AddOffer
+    template_name = 'app/offer_detail.html'
+    context_object_name = 'offer'
+
+    def get_context_data(self, **kwargs):
+        condition = False
+        if self.object.profile.id == self.request.user.profile.id or self.request.user.is_superuser:
+            condition = True
+        context = super().get_context_data(**kwargs)
+        context['condition'] = condition
+        return context
+
 
 
 def edit_offer(request, pk):
