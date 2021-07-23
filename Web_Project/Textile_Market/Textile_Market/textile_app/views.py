@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, TemplateView, DetailView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, TemplateView, DetailView, UpdateView, DeleteView
 
 from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm
@@ -88,19 +90,28 @@ class OfferDetailView(DetailView):
 
 
 
-def edit_offer(request, pk):
-    offer = AddOffer.objects.get(pk=pk)
-    profile = Profile.objects.get(pk=offer.profile.id)
-    if request.method == 'GET':
-        form = OfferForm(instance=offer)
-        return render(request, 'app/edit_offer.html', {'form': form})
-    form = OfferForm(request.POST, request.FILES, instance=offer)
-    if form.is_valid():
-        offer = form.save(commit=False)
-        offer.profile = profile
-        offer.save()
-        return redirect('details offer', pk=pk)
-    return render(request, 'app/edit_offer.html', {'form': form})
+# def edit_offer(request, pk):
+#     offer = AddOffer.objects.get(pk=pk)
+#     profile = Profile.objects.get(pk=offer.profile.id)
+#     if request.method == 'GET':
+#         form = OfferForm(instance=offer)
+#         return render(request, 'app/edit_offer.html', {'form': form})
+#     form = OfferForm(request.POST, request.FILES, instance=offer)
+#     if form.is_valid():
+#         offer = form.save(commit=False)
+#         offer.profile = profile
+#         offer.save()
+#         return redirect('details offer', pk=pk)
+#     return render(request, 'app/edit_offer.html', {'form': form})
+
+
+class EditOfferView(UpdateView):
+    template_name = 'app/edit_offer.html'
+    model = AddOffer
+    form_class = OfferForm
+
+    def get_success_url(self):
+        return reverse_lazy('details offer', kwargs={'pk': self.object.pk})
 
 
 def delete_offer(request, pk):
@@ -113,6 +124,15 @@ def delete_offer(request, pk):
         return render(request, 'app/delete_offer.html', {'form': form, 'offer': offer})
     offer.delete()
     return redirect('my offers', pk=request.user.profile.id)
+
+# class DeleteOfferView(DeleteView):
+#     template_name = 'app/delete_offer.html'
+#     model = AddOffer
+#     form_class = OfferForm
+
+
+
+
 
 def page_401(request):
     return render(request, 'common/401_page.html')

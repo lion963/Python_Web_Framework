@@ -9,7 +9,7 @@ register = Library()
 def profile_complete_notification(context):
     if context.request.user.id:
         user_id = context.request.user.id
-        profile = Profile.objects.get(pk=user_id)
+        profile = context.request.user.profile
         complete = all([profile.first_name, profile.last_name, profile.type, profile.telephone, profile.image])
         if complete:
             return {'not_complete': False,
