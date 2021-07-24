@@ -2,10 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, TemplateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, TemplateView, DetailView, UpdateView, DeleteView, CreateView
 
 from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm
+from Textile_Market.textile_app.mixins import GroupRequiredMixin
 from Textile_Market.textile_app.models import AddOffer
 from Textile_Market.textile_profile.models import Profile
 
@@ -17,20 +18,35 @@ class HomePageView(TemplateView):
 #     return render(request, 'home_page.html')
 
 
-@login_required(login_url='login')
-@allowed_groups(['Company'])
-def create_offer(request, pk):
-    profile = Profile.objects.get(pk=pk)
-    if request.method == 'GET':
-        form = OfferForm()
-        return render(request, 'app/create_offer.html', context={'form':form})
-    form = OfferForm(request.POST, request.FILES)
-    if form.is_valid():
-        offer = form.save(commit=False)
-        offer.profile = profile
-        offer.save()
-        return redirect('my offers', profile.id)
-    return render(request, 'app/create_offer.html', context={'form':form})
+# @login_required(login_url='login')
+# @allowed_groups(['Company'])
+# def create_offer(request, pk):
+#     profile = Profile.objects.get(pk=pk)
+#     if request.method == 'GET':
+#         form = OfferForm()
+#         return render(request, 'app/create_offer.html', context={'form':form})
+#     form = OfferForm(request.POST, request.FILES)
+#     if form.is_valid():
+#         offer = form.save(commit=False)
+#         offer.profile = profile
+#         offer.save()
+#         return redirect('my offers', profile.id)
+#     return render(request, 'app/create_offer.html', context={'form':form})
+
+class CreateOfferView(GroupRequiredMixin, CreateView):
+    template_name = 'app/create_offer.html'
+    model = AddOffer
+    form_class = OfferForm
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save(commit=False)
+        self.object.profile = self.request.user.profile
+        self.object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('my offers', kwargs={'pk': self.request.user.profile.id})
 
 
 class OffersView(ListView):
@@ -114,25 +130,38 @@ class EditOfferView(UpdateView):
         return reverse_lazy('details offer', kwargs={'pk': self.object.pk})
 
 
-def delete_offer(request, pk):
-    offer = AddOffer.objects.get(pk=pk)
-    if request.method == 'GET':
-        form = OfferForm(instance=offer)
-        for field in form.fields:
-            form.fields[field].widget.attrs['readonly'] = True
-            form.fields[field].widget.attrs['disabled'] = True
-        return render(request, 'app/delete_offer.html', {'form': form, 'offer': offer})
-    offer.delete()
-    return redirect('my offers', pk=request.user.profile.id)
+# def delete_offer(request, pk):
+#     offer = AddOffer.objects.get(pk=pk)
+#     if request.method == 'GET':
+#         form = OfferForm(instance=offer)
+#         for field in form.fields:
+#             form.fields[field].widget.attrs['readonly'] = True
+#             form.fields[field].widget.attrs['disabled'] = True
+#         return render(request, 'app/delete_offer.html', {'form': form, 'offer': offer})
+#     offer.delete()
+#     return redirect('my offers', pk=request.user.profile.id)
 
-# class DeleteOfferView(DeleteView):
-#     template_name = 'app/delete_offer.html'
-#     model = AddOffer
-#     form_class = OfferForm
+class DeleteOfferView(DeleteView):
+    template_name = 'app/delete_offer.html'
+    model = AddOffer
+    form_class = OfferForm
+    context_object_name = 'offer'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = context['object']
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('my offers', kwargs={'pk': self.request.user.profile.id})
 
 
 
+# def page_401(request):
+#     return render(request, 'common/401_page.html')
 
 
-def page_401(request):
-    return render(request, 'common/401_page.html')
+class Page401View(TemplateView):
+    template_name = 'common/401_page.html'
+
+
