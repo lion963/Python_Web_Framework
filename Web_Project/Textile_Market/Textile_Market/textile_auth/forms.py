@@ -45,3 +45,5 @@ class ProfileRegisterForm(forms.ModelForm):
             'type': forms.Select(attrs= {'class': 'form-control'})
         }
 
+
+

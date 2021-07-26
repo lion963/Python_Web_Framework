@@ -5,6 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView
 
 from Textile_Market.textile_auth.forms import LoginForm, ProfileRegisterForm
 from Textile_Market.textile_profile.models import Profile
@@ -94,7 +95,41 @@ def register(request):
             return redirect('home')
     return render(request, 'app_auth/register.html', context)
 
-
+# class RegisterView(CreateView):
+#     template_name = 'app_auth/register.html'
+#     user_form_class = UserCreationForm
+#     profile_form_class = ProfileRegisterForm
+#
+#
+#     def get(self, request, *args, **kwargs):
+#         user_form = self.user_form_class()
+#         profile_form = self.profile_form_class()
+#         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
+#
+#     def post(self, request, *args, **kwargs):
+#         user_form = self.user_form_class(request.POST)
+#         profile_form = self.profile_form_class(request.POST)
+#         if user_form.is_valid() and profile_form.is_valid():
+#             username = user_form.cleaned_data['username']
+#             password = user_form.cleaned_data['password2']
+#             user = user_form.save()
+#             profile = profile_form.save(commit=False)
+#             profile.user = user
+#             profile.save()
+#             groups = Group.objects.all()
+#             for group in groups:
+#                 if group.name == 'User' and profile.type == 'person':
+#                     user.groups.add(group)
+#                 if group.name == 'Company' and profile.type == 'company':
+#                     user.groups.add(group)
+#             user = authenticate(request, username=username, password=password)
+#             if user:
+#                 login(request, user)
+#                 return HttpResponseRedirect(self.get_success_url())
+#         return render(request, self.template_name, {'form': user_form, 'work_form': profile_form})
+#
+#     def get_success_url(self):
+#         return reverse('home')
 
 
 
