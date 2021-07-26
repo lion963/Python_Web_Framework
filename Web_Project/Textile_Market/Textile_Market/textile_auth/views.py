@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
+from django.views.generic.base import View
 
 from Textile_Market.textile_auth.forms import LoginForm, ProfileRegisterForm
 from Textile_Market.textile_profile.models import Profile
@@ -55,9 +56,18 @@ class SignInView(LoginView):
         return reverse('home')
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('home')
+# def logout_view(request):
+#     logout(request)
+#     return redirect('home')
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('home')
+
 
 
 # def register(request):
