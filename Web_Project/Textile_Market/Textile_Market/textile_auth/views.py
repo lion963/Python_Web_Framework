@@ -60,76 +60,77 @@ def logout_view(request):
     return redirect('home')
 
 
-def register(request):
-    if request.method == 'GET':
-        user_form = UserCreationForm()
-        profile_form = ProfileRegisterForm()
-        context = {
-            'user_form': user_form,
-            'profile_form': profile_form,
-        }
-        return render(request, 'app_auth/register.html', context)
+# def register(request):
+#     if request.method == 'GET':
+#         user_form = UserCreationForm()
+#         profile_form = ProfileRegisterForm()
+#         context = {
+#             'user_form': user_form,
+#             'profile_form': profile_form,
+#         }
+#         return render(request, 'app_auth/register.html', context)
+#
+#     user_form = UserCreationForm(request.POST)
+#     profile_form = ProfileRegisterForm(request.POST, request.FILES)
+#     context = {
+#         'user_form': user_form,
+#         'profile_form': profile_form,
+#     }
+#     if user_form.is_valid() and profile_form.is_valid():
+#         username = user_form.cleaned_data['username']
+#         password = user_form.cleaned_data['password2']
+#         user = user_form.save()
+#         profile = profile_form.save(commit=False)
+#         profile.user = user
+#         profile.save()
+#         groups = Group.objects.all()
+#         for group in groups:
+#             if group.name == 'User' and profile.type == 'person':
+#                 user.groups.add(group)
+#             if group.name == 'Company' and profile.type == 'company':
+#                 user.groups.add(group)
+#         user = authenticate(request, username=username, password=password)
+#         if user:
+#             login(request, user)
+#             return redirect('home')
+#     return render(request, 'app_auth/register.html', context)
 
-    user_form = UserCreationForm(request.POST)
-    profile_form = ProfileRegisterForm(request.POST, request.FILES)
-    context = {
-        'user_form': user_form,
-        'profile_form': profile_form,
-    }
-    if user_form.is_valid() and profile_form.is_valid():
-        username = user_form.cleaned_data['username']
-        password = user_form.cleaned_data['password2']
-        user = user_form.save()
-        profile = profile_form.save(commit=False)
-        profile.user = user
-        profile.save()
-        groups = Group.objects.all()
-        for group in groups:
-            if group.name == 'User' and profile.type == 'person':
-                user.groups.add(group)
-            if group.name == 'Company' and profile.type == 'company':
-                user.groups.add(group)
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            return redirect('home')
-    return render(request, 'app_auth/register.html', context)
+class RegisterView(CreateView):
+    template_name = 'app_auth/register.html'
+    user_form_class = UserCreationForm
+    profile_form_class = ProfileRegisterForm
 
-# class RegisterView(CreateView):
-#     template_name = 'app_auth/register.html'
-#     user_form_class = UserCreationForm
-#     profile_form_class = ProfileRegisterForm
-#
-#
-#     def get(self, request, *args, **kwargs):
-#         user_form = self.user_form_class()
-#         profile_form = self.profile_form_class()
-#         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
-#
-#     def post(self, request, *args, **kwargs):
-#         user_form = self.user_form_class(request.POST)
-#         profile_form = self.profile_form_class(request.POST)
-#         if user_form.is_valid() and profile_form.is_valid():
-#             username = user_form.cleaned_data['username']
-#             password = user_form.cleaned_data['password2']
-#             user = user_form.save()
-#             profile = profile_form.save(commit=False)
-#             profile.user = user
-#             profile.save()
-#             groups = Group.objects.all()
-#             for group in groups:
-#                 if group.name == 'User' and profile.type == 'person':
-#                     user.groups.add(group)
-#                 if group.name == 'Company' and profile.type == 'company':
-#                     user.groups.add(group)
-#             user = authenticate(request, username=username, password=password)
-#             if user:
-#                 login(request, user)
-#                 return HttpResponseRedirect(self.get_success_url())
-#         return render(request, self.template_name, {'form': user_form, 'work_form': profile_form})
-#
-#     def get_success_url(self):
-#         return reverse('home')
+
+    def get(self, request, *args, **kwargs):
+        user_form = self.user_form_class()
+        profile_form = self.profile_form_class()
+        return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
+
+
+    def post(self, request, *args, **kwargs):
+        user_form = self.user_form_class(request.POST)
+        profile_form = self.profile_form_class(request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            username = user_form.cleaned_data['username']
+            password = user_form.cleaned_data['password2']
+            user = user_form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
+            groups = Group.objects.all()
+            for group in groups:
+                if group.name == 'User' and profile.type == 'person':
+                    user.groups.add(group)
+                if group.name == 'Company' and profile.type == 'company':
+                    user.groups.add(group)
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return HttpResponseRedirect(self.get_success_url())
+        return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
+
+    def get_success_url(self):
+        return reverse('home')
 
 
 
