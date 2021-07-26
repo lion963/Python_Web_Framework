@@ -1,11 +1,12 @@
 from django import forms
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 
 from Textile_Market.textile_profile.models import Profile
 
 
-class LoginForm(forms.Form):
+class LoginForm(AuthenticationForm):
 
     username = forms.CharField(
         max_length=30,
@@ -33,6 +34,7 @@ class LoginForm(forms.Form):
         )
         if not self.user:
             raise ValidationError('Username and/or password incorrect')
+
 
 
 class ProfileRegisterForm(forms.ModelForm):
