@@ -14,24 +14,6 @@ from Textile_Market.textile_profile.models import Profile
 class HomePageView(TemplateView):
     template_name = 'common/home_page.html'
 
-# def home_page(request):
-#     return render(request, 'home_page.html')
-
-
-# @login_required(login_url='login')
-# @allowed_groups(['Company'])
-# def create_offer(request, pk):
-#     profile = Profile.objects.get(pk=pk)
-#     if request.method == 'GET':
-#         form = OfferForm()
-#         return render(request, 'app/create_offer.html', context={'form':form})
-#     form = OfferForm(request.POST, request.FILES)
-#     if form.is_valid():
-#         offer = form.save(commit=False)
-#         offer.profile = profile
-#         offer.save()
-#         return redirect('my offers', profile.id)
-#     return render(request, 'app/create_offer.html', context={'form':form})
 
 class CreateOfferView(GroupRequiredMixin, CreateView):
     template_name = 'app/create_offer.html'
@@ -54,20 +36,6 @@ class OffersView(ListView):
     model = AddOffer
     template_name = 'common/offers.html'
 
-# def offers(request):
-#     offers = AddOffer.objects.all()
-#     context = {
-#         'offers': offers
-#     }
-#     return render(request, 'offers.html', context)
-
-# def my_offers(request, pk):
-#     profile = Profile.objects.get(pk=pk)
-#     offers = AddOffer.objects.filter(profile_id=profile)
-#     context = {
-#         'offers': offers
-#     }
-#     return render(request, 'app/my_offers.html', context)
 
 class MyOffersView(ListView):
     model = AddOffer
@@ -79,17 +47,6 @@ class MyOffersView(ListView):
         context['offers'] = context['offers'].filter(profile_id=self.request.user.profile)
         return context
 
-
-# def offer_details(request, pk):
-#     condition = False
-#     offer = AddOffer.objects.get(pk=pk)
-#     if offer.profile.id == request.user.profile.id or request.user.is_superuser:
-#         condition = True
-#     context = {
-#         'offer': offer,
-#         'condition': condition
-#     }
-#     return render(request, 'app/offer_detail.html', context)
 
 class OfferDetailView(DetailView):
     model = AddOffer
@@ -105,6 +62,83 @@ class OfferDetailView(DetailView):
         return context
 
 
+class EditOfferView(UpdateView):
+    template_name = 'app/edit_offer.html'
+    model = AddOffer
+    form_class = OfferForm
+
+    def get_success_url(self):
+        return reverse_lazy('details offer', kwargs={'pk': self.object.pk})
+
+
+class DeleteOfferView(DeleteView):
+    template_name = 'app/delete_offer.html'
+    model = AddOffer
+    form_class = OfferForm
+    context_object_name = 'offer'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = self.form_class(instance=context['offer'])
+        for field in form.fields:
+            form.fields[field].widget.attrs['readonly'] = True
+            form.fields[field].widget.attrs['disabled'] = True
+        context['form'] = form
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('my offers', kwargs={'pk': self.request.user.profile.id})
+
+
+class Page401View(TemplateView):
+    template_name = 'common/401_page.html'
+
+
+# def home_page(request):
+#     return render(request, 'home_page.html')
+
+
+# @login_required(login_url='login')
+# @allowed_groups(['Company'])
+# def create_offer(request, pk):
+#     profile = Profile.objects.get(pk=pk)
+#     if request.method == 'GET':
+#         form = OfferForm()
+#         return render(request, 'app/create_offer.html', context={'form':form})
+#     form = OfferForm(request.POST, request.FILES)
+#     if form.is_valid():
+#         offer = form.save(commit=False)
+#         offer.profile = profile
+#         offer.save()
+#         return redirect('my offers', profile.id)
+#     return render(request, 'app/create_offer.html', context={'form':form})
+
+
+# def offers(request):
+#     offers = AddOffer.objects.all()
+#     context = {
+#         'offers': offers
+#     }
+#     return render(request, 'offers.html', context)
+
+# def my_offers(request, pk):
+#     profile = Profile.objects.get(pk=pk)
+#     offers = AddOffer.objects.filter(profile_id=profile)
+#     context = {
+#         'offers': offers
+#     }
+#     return render(request, 'app/my_offers.html', context)
+
+# def offer_details(request, pk):
+#     condition = False
+#     offer = AddOffer.objects.get(pk=pk)
+#     if offer.profile.id == request.user.profile.id or request.user.is_superuser:
+#         condition = True
+#     context = {
+#         'offer': offer,
+#         'condition': condition
+#     }
+#     return render(request, 'app/offer_detail.html', context)
 
 # def edit_offer(request, pk):
 #     offer = AddOffer.objects.get(pk=pk)
@@ -120,16 +154,6 @@ class OfferDetailView(DetailView):
 #         return redirect('details offer', pk=pk)
 #     return render(request, 'app/edit_offer.html', {'form': form})
 
-
-class EditOfferView(UpdateView):
-    template_name = 'app/edit_offer.html'
-    model = AddOffer
-    form_class = OfferForm
-
-    def get_success_url(self):
-        return reverse_lazy('details offer', kwargs={'pk': self.object.pk})
-
-
 # def delete_offer(request, pk):
 #     offer = AddOffer.objects.get(pk=pk)
 #     if request.method == 'GET':
@@ -141,27 +165,5 @@ class EditOfferView(UpdateView):
 #     offer.delete()
 #     return redirect('my offers', pk=request.user.profile.id)
 
-class DeleteOfferView(DeleteView):
-    template_name = 'app/delete_offer.html'
-    model = AddOffer
-    form_class = OfferForm
-    context_object_name = 'offer'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = context['object']
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy('my offers', kwargs={'pk': self.request.user.profile.id})
-
-
-
 # def page_401(request):
 #     return render(request, 'common/401_page.html')
-
-
-class Page401View(TemplateView):
-    template_name = 'common/401_page.html'
-
-
