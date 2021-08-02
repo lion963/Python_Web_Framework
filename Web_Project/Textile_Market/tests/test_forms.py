@@ -54,7 +54,7 @@ class LoginFormTests(TestCase):
             'username': 'Test',
             'password': '20232521a'
         }
-        form = LoginForm(data)
+        form = LoginForm(data=data)
         self.assertTrue(form.is_valid())
 
     def test_if_credentials_is_not_valid(self):
@@ -62,5 +62,5 @@ class LoginFormTests(TestCase):
             'username': 'Test',
             'password': ''
         }
-        form = ProfileForm(data)
+        form = ProfileForm(data=data)
         self.assertFalse(form.is_valid())
