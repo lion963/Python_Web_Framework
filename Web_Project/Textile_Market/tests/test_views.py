@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client, RequestFactory
 
 from Textile_Market.textile_app.models import AddOffer
-from Textile_Market.textile_app.views import offer_details
-from Textile_Market.textile_auth.views import login_view, register
+from Textile_Market.textile_app.views import OfferDetailView, MyOffersView, OffersView
+from Textile_Market.textile_auth.views import SignInView, RegisterView
 from Textile_Market.textile_profile.models import Profile
-from Textile_Market.textile_profile.views import profile
+from Textile_Market.textile_profile.views import ProfileView
 
 
-class TextileMarket_textile_appViewTests(TestCase):
+class TextileMarket_textile_app_ViewTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.test_client = Client()
@@ -18,40 +18,40 @@ class TextileMarket_textile_appViewTests(TestCase):
                                               type='company', telephone='085236', image='')
         self.offer = AddOffer.objects.create(profile=self.profile, garment_type='pants', quantity=200)
 
-    def test_getHomePage_should_render_template(self):
+    def test_Page401View(self):
         response = self.test_client.get('')
         self.assertTemplateUsed(response, 'common/home_page.html')
 
-    def test_offersView_template(self):
-        response = self.test_client.get('/offers')
-        offers = response.context['offers']
-        self.assertTemplateUsed(response, 'common/offers.html')
+    def test_OffersView(self):
+        request = self.factory.get('/offers')
+        request.user = self.user
+        response = OffersView()
+        self.assertEqual(response.response_class.status_code, 200)
 
-    def test_my_offersView_template(self):
-        response = self.test_client.get(f'/my_offers/{self.profile.id}')
-        offers = response.context['offers']
-        self.assertTemplateUsed(response, 'app/my_offers.html')
+    def test_MyOffersView(self):
+        request = self.factory.get(f'/my_offers/{self.profile.id}')
+        request.user = self.user
+        response = MyOffersView()
+        self.assertEqual(response.response_class.status_code, 200)
 
-    def test_offer_details_View_template(self):
+    def test_OfferDetailView(self):
         request = self.factory.get(f'/offer_details/{self.offer.id}')
         request.user = self.user
-        response = offer_details(request, self.offer.id)
-        self.assertEqual(response.status_code, 200)
+        response = OfferDetailView()
+        self.assertEqual(response.response_class.status_code, 200)
 
-    def test_create_offer(self):
+    def test_CreateOfferView(self):
         data = {
             'profile': self.profile,
             'garment_type': 'pants',
             'quantity': 200}
         request = self.factory.post(f'/create/{self.profile.id}', data)
         request.user = self.user
-        response = offer_details(request, self.profile.id)
-        self.assertEqual(response.status_code, 200)
+        response = OfferDetailView()
+        self.assertEqual(response.response_class.status_code, 200)
 
 
-
-
-class TextileMarket_textile_authViewTests(TestCase):
+class TextileMarket_textile_auth_SignInView_RegisterView_Tests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.test_client = Client()
@@ -60,19 +60,17 @@ class TextileMarket_textile_authViewTests(TestCase):
                                               type='company', telephone='085236', image='')
         self.offer = AddOffer.objects.create(profile=self.profile, garment_type='pants', quantity=200)
 
-    def test_login(self):
+    def test_SignInView(self):
         data = {
-                'username': self.user.username,
-                'password': self.user.password,
+            'username': self.user.username,
+            'password': self.user.password,
         }
-        # self.test_client.login()
         request = self.factory.post('/login', data)
         request.user = self.user
-        response = login_view(request)
-        # response = self.test_client.post('/login', data)
-        self.assertEqual(response.status_code, 200)
+        response = SignInView()
+        self.assertEqual(response.response_class.status_code, 200)
 
-    def test_register(self):
+    def test_RegisterView(self):
         data = {
             'username': 'test123',
             'password': '20232521a',
@@ -83,11 +81,11 @@ class TextileMarket_textile_authViewTests(TestCase):
         }
         request = self.factory.post('/register', data)
         request.user = self.user
-        response = register(request)
-        self.assertEqual(response.status_code, 200)
+        response = RegisterView()
+        self.assertEqual(response.response_class.status_code, 200)
 
 
-class TextileMarket_textile_profileViewTests(TestCase):
+class TextileMarket_textile_profilr_ProfileViewTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.test_client = Client()
@@ -96,8 +94,8 @@ class TextileMarket_textile_profileViewTests(TestCase):
                                               type='company', telephone='085236', image='')
         self.offer = AddOffer.objects.create(profile=self.profile, garment_type='pants', quantity=200)
 
-    def test_profile_view(self):
+    def test_ProfileView(self):
         request = self.factory.get('/profile')
         request.user = self.user
-        response = profile(request)
-        self.assertEqual(response.status_code, 200)
+        response = ProfileView()
+        self.assertEqual(response.response_class.status_code, 200)
