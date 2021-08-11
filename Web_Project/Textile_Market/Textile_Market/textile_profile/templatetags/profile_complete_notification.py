@@ -1,6 +1,5 @@
 from django.template import Library
 
-from Textile_Market.textile_profile.models import Profile
 
 register = Library()
 

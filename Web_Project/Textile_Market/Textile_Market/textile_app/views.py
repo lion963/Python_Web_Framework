@@ -1,14 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, TemplateView, DetailView, UpdateView, DeleteView, CreateView
 
-from Textile_Market.textile_app.decorators import allowed_groups
 from Textile_Market.textile_app.forms import OfferForm
 from Textile_Market.textile_app.mixins import GroupRequiredMixin
 from Textile_Market.textile_app.models import AddOffer
-from Textile_Market.textile_profile.models import Profile
+
 
 
 class HomePageView(TemplateView):

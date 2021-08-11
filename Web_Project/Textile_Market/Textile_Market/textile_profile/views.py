@@ -2,7 +2,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, DeleteView
 
