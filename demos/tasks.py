@@ -72,5 +72,5 @@ first_five = positives(6)
 for i in first_five:
     print(i)
 
-SELECT * FROM Employee , Department
-JOIN Employee.department_id ,
+# SELECT * FROM Employee , Department
+# JOIN Employee.department_id ,
