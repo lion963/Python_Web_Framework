@@ -93,3 +93,6 @@ ROBOTSTXT_OBEY = True
 # SPLASH_URL = 'http://localhost:8050/'
 # DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 # HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
+FEED_FORMAT = 'json'
+FEED_URI = 'data.json'

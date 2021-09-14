@@ -1,8 +1,9 @@
 import scrapy
 
+
 class DataSpider(scrapy.Spider):
     name = "data"
-    start_urls =['https://shop.mango.com/bg-en/women/skirts-midi/midi-satin-skirt_17042020.html?c=99',]
+    start_urls = ['https://shop.mango.com/bg-en/women/skirts-midi/midi-satin-skirt_17042020.html?c=99', ]
 
     def parse(self, response, **kwargs):
         name = response.css('h1.product-name::text').get()
@@ -15,4 +16,4 @@ class DataSpider(scrapy.Spider):
             'price': price,
             'color': color,
             'size': size
-               }
+        }
