@@ -12,32 +12,50 @@
 # Equivalently, a perfect number is a number that is half the sum of all its positive divisors (including itself).
 # Write a method that prints the first 4 perfect numbers.
 
-def find_devisors(num):
-    devisors = []
-    for i in range(1, num+1):
-        if num % i == 0:
-            devisors.append(i)
-    return devisors
+# def find_devisors(num):
+#     devisors = []
+#     for i in range(1, num+1):
+#         if num % i == 0:
+#             devisors.append(i)
+#     return devisors
+#
+#
+# def check_perfect(devisors, num):
+#     if num == sum(devisors) - num:
+#         return True
+#     return False
+#
+#
+# def perfect_nums():
+#     perfect_num = []
+#     num = 1
+#     while len(perfect_num) < 4:
+#         devisors = find_devisors(num)
+#         is_perfect = check_perfect(devisors, num)
+#         if is_perfect:
+#             perfect_num.append(num)
+#         num += 1
+#     return perfect_num
+#
+# print(perfect_nums())
+# # devisors = find_devisors(6)
+# # print(check_perfect(devisors, 6))
+
+import sys
+
+list1 = [1, 4, 6, 7 ,45, 56]
+sorted_list = []
+# print(sorted(list1, key = lambda x: x))
+while list1:
+    min_num = sys.maxsize
+    for num in list1:
+        if num < min_num:
+            min_num = num
+    sorted_list.append(min_num)
+    list1.remove(min_num)
+
+print(sorted_list)
 
 
-def check_perfect(devisors, num):
-    if num == sum(devisors) - num:
-        return True
-    return False
 
-
-def perfect_nums():
-    perfect_num = []
-    num = 1
-    while len(perfect_num) < 4:
-        devisors = find_devisors(num)
-        is_perfect = check_perfect(devisors, num)
-        if is_perfect:
-            perfect_num.append(num)
-        num += 1
-    return perfect_num
-
-print(perfect_nums())
-# devisors = find_devisors(6)
-# print(check_perfect(devisors, 6))
 
