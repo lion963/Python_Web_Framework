@@ -96,3 +96,4 @@ ROBOTSTXT_OBEY = True
 
 FEED_FORMAT = 'json'
 FEED_URI = 'data.json'
+
