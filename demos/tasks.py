@@ -64,12 +64,21 @@
 #
 # print(Person.comare(person1, person2))
 
-def positives(num):
-    for i in range(num):
-        yield i
+# def positives(num):
+#     for i in range(num):
+#         yield i
+#
+# first_five = positives(6)
+# for i in first_five:
+#     print(i)
 
-first_five = positives(6)
-for i in first_five:
+def positives():
+    num = 1
+    yield num
+    num +=1
+
+first_five = positives()
+for i in range(1, 6):
     print(i)
 
 # SELECT * FROM Employee , Department
